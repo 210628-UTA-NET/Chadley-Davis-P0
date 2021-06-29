@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 namespace StoreManager
 {
     public class Customer

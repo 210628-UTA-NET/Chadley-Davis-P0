@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using StoreModels;
 
 namespace StoreManager
 {
@@ -21,9 +23,9 @@ namespace StoreManager
         }
         public void AddInventory(Product product, int amount)
         {
-            if(Inventory[product] != null)
+            if(Inventory.ContainsKey(product))
             {
-                Inventory[product].Value += amount;
+                Inventory[product] += amount;
             }
             else
             {
@@ -32,18 +34,18 @@ namespace StoreManager
         }
         public void RemoveInventory(Product product, int amount)
         {
-            if(Inventory[product] != null)
+            if(Inventory.ContainsKey(product))
             {
-                if(Inventory[product].Value >= amount)
-                    Inventory[product].Value -= amount;
+                if(Inventory[product] >= amount)
+                    Inventory[product] -= amount;
                 else
                 {
-                    throw Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventory[product].Value}.");
+                    throw new Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventory[product]}.");
                 }
             }
             else
             {
-                throw Exception("Product not included in inventory. Unable to remove.");
+                throw new Exception("Product not included in inventory. Unable to remove.");
             }
         }
     }

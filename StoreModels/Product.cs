@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using StoreModels;
 
 namespace StoreManager
 {
@@ -17,13 +19,13 @@ namespace StoreManager
             Price = price;
         }
     }
-    public class ProductEqualityComparer : IEqualityComparer<Prduct>
+    public class ProductEqualityComparer : IEqualityComparer<Product>
     {
-        public bool Equals(Prduct p1, Prduct p2)
+        public bool Equals(Product p1, Product p2)
         {
-            if (b2 == null && p1 == null)
+            if (p2 == null && p1 == null)
             return true;
-            else if (p1 == null || b2 == null)
+            else if (p1 == null || p2 == null)
             return false;
             else if(p1.Name == p2.Name)
                 return true;

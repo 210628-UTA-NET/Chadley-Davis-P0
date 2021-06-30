@@ -4,10 +4,9 @@
 
 ### DotnetCore ###
 # .NET Core build folders
-StoreManager/bin/
-StoreManager/obj/
-StoreModels/bin/
-StoreModels/obj/
+**/bin
+**/obj
+
 
 # Common node modules locations
 /node_modules

@@ -7,11 +7,13 @@ namespace StoreModels
 {
     public class Order
     {
+        public int Id { get; }
         public List<Detail> Details { get; private set; }
         public Address Location { get; private set; }
         public DateTime OrderDate { get; private set; }
-        public Order(Address orderLocation)
+        public Order(int id, Address orderLocation)
         {
+            Id = id;
             Location = orderLocation;
             OrderDate = DateTime.UtcNow;
             Details = new List<Detail>();   

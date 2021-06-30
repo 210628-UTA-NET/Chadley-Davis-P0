@@ -6,6 +6,7 @@ namespace StoreModels
 {
     public class StoreFront
     {
+        public int Id { get; }
         public string Name { get; private set; }
 
         public ContactInformation ContactInformation { get; private set; }
@@ -13,7 +14,7 @@ namespace StoreModels
         
         public Queue<Order> PendingOrders { get; private set; }
         public Queue<Order> CompletedOrders { get; private set; }
-        public List<Customer> Customers { get; private set; }
+        public Dictionary<Customer> Customers { get; private set; }
         public List<Order> Orders 
         { 
             get 
@@ -25,15 +26,15 @@ namespace StoreModels
             } 
         }
 
-        public StoreFront(string name)
+        public StoreFront(int id, string name)
         {
-            Name = name;
-            
+            Id = id;
+            Name = name;            
             Inventory = new Dictionary<Product, int>();
             Orders = new List<Order>();
             PendingOrders = new Queue<Order>(); 
             CompletedOrders = new Queue<Order>();
-            Customers = new List<Customer>();
+            Customers = new Dictionary<Customer>();
         }        
         public void SetAddress(ContactInformation contactInformation)
         {
@@ -66,7 +67,10 @@ namespace StoreModels
                 throw new Exception("Product not included in inventory. Unable to remove.");
             }
         }
-        
+        public void AddCustomer(Customer customer)
+        {
+            Customers.Add(customer);
+        }
         public void AddOrder(Order order)
         {            
             PendingOrders.Enqueue(order);
@@ -86,7 +90,7 @@ namespace StoreModels
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() * Category.GetHashCode();
+            return Id.GetHashCode();
         }
         /// <summary>
         /// Compares Two StoreFronts for Equality

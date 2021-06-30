@@ -6,12 +6,14 @@ namespace StoreModels
 {
     public class Product
     {
+        public int Id { get; }
         public string Name { get; private set; }
         public string Description { get; private set; }
         public decimal Price { get; private set; }
         public Category Category { get; private set; }
-        public Product(string name, string description, Category category)
+        public Product(int id, string name, string description, Category category)
         {
+            Id = id;
             Name = name;
             Description = description;
             Category = category;
@@ -28,7 +30,7 @@ namespace StoreModels
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode() * Category.GetHashCode();
+            return Id.GetHashCode();
         }
         /// <summary>
         /// Compares Two Products for Equality

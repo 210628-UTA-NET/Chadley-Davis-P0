@@ -4,6 +4,7 @@ namespace StoreModels
 {
     public class Customer
     {
+        public int Id { get; }
         public string FirstName { get; private set; }
 
         public string LastName { get; private set; }
@@ -11,8 +12,9 @@ namespace StoreModels
 
         public ContactInformation ContactInformation { get; private set; }
         public List<Order> Orders { get; private set; }
-        public Customer(string firstName, string lastName)
+        public Customer(int id, string firstName, string lastName)
         {
+            Id = id;
             FirstName = firstName;
             LastName = lastName;
             Orders = new List<Order>();
@@ -35,7 +37,7 @@ namespace StoreModels
 
         public override int GetHashCode()
         {
-            return (FirstName + LastName).GetHashCode() ^ ContactInformation.GetHashCode();
+            return Id.GetHashCode();
         }
         /// <summary>
         /// Compares Two Customers for Equality

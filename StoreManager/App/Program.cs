@@ -1,12 +1,13 @@
 ﻿using System;
 using StoreModels;
+using System.Collections.Generic;
 
 namespace App
 {
     class Program
     {
-        static Dictionary<Customer> Customers { get; set; }
-        static Dictionary<StoreFront> StoreFronts { get; set; }
+        static HashSet<Customer> Customers { get; set; }
+        static HashSet<StoreFront> StoreFronts { get; set; }
         static void Main(string[] args)
         {
             int flag = 0;
@@ -31,7 +32,7 @@ namespace App
                 }
             }while(flag != 0);
         }
-        void ManageCustomers()
+        static void ManageCustomers()
         {
             int flag = 0;
             do{
@@ -57,7 +58,7 @@ namespace App
 
 
             }while(flag != 0);
-            int id = Customers.Count();
+            int id = Customers.Count;
             Console.WriteLine("Enter the New Customer's First Name.");
             string firstName = Console.ReadLine();
             Console.WriteLine("Enter the New Customer's Last Name.");
@@ -66,22 +67,22 @@ namespace App
             Customers.Add(customer);            
             Console.WriteLine($"The ID of {customer.ToString()} is {id}.");
         }
-        void ListCustomers()
+        static void ListCustomers()
         {
 
         }
-        void AddNewCustomer()
+        static void AddNewCustomer()
         {
 
         }
 
-        void EditCustomer()
+        static void EditCustomer()
         {
 
         }
-        void ManageStoreFronts()
+        static void ManageStoreFronts()
         {
-            int id = StoreFronts.Count();
+            int id = StoreFronts.Count;
             Console.WriteLine("Enter the New Store's Name.");
             string firstName = Console.ReadLine();
             Console.WriteLine("Enter the New Customer's Last Name.");

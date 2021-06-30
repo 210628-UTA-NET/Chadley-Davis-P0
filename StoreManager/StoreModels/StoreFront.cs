@@ -13,8 +13,8 @@ namespace StoreModels
         public Dictionary<Product, int> Inventory { get; private set; }
         
         public Queue<Order> PendingOrders { get; private set; }
-        public Queue<Order> CompletedOrders { get; private set; }
-        public Dictionary<Customer> Customers { get; private set; }
+        public List<Order> CompletedOrders { get; private set; }
+        public HashSet<Customer> Customers { get; private set; }
         public List<Order> Orders 
         { 
             get 
@@ -31,10 +31,9 @@ namespace StoreModels
             Id = id;
             Name = name;            
             Inventory = new Dictionary<Product, int>();
-            Orders = new List<Order>();
             PendingOrders = new Queue<Order>(); 
-            CompletedOrders = new Queue<Order>();
-            Customers = new Dictionary<Customer>();
+            CompletedOrders = new List<Order>();
+            Customers = new HashSet<Customer>();
         }        
         public void SetAddress(ContactInformation contactInformation)
         {

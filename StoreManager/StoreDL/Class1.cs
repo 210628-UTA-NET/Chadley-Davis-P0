@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StoreBO
+namespace StoreDL
 {
     public class Class1
     {

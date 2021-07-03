@@ -9,6 +9,7 @@ namespace StoreDL
 {
     public class DBModel
     {
+        
         public List<Address> Addresses { get; set; }
         public List<ContactInformation> ContactInformation { get; set; }
         public List<Customer> Customers { get; set; }

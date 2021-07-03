@@ -32,7 +32,12 @@ namespace StoreModels
         }
         public Address Location { get; set; }
         public DateTime OrderDate { get; set; }
+        public Guid CustomertId { get; set; }
+        public Customer Customer { get; set; }
 
+        public Guid StoreFrontId { get; set; }
+        public StoreFront StoreFront { get; set; }
+        public DateTime LastUpdate { get; set; }
         #endregion
 
         #region Constructors

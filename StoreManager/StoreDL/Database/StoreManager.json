@@ -1,9 +1,10 @@
 {
-  "StoreFronts": [],
-  "Customers": [],
   "Addresses": [],
   "ContactInformation": [],
+  "Customers": [],
   "Details": [],
+  "Inventory": [],
   "Orders": [],
-  "Products": []
+  "Products": [],
+  "StoreFronts": []
 }

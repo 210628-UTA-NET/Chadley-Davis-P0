@@ -19,6 +19,7 @@ namespace StoreModels
             }
         }
         public Address Address { get; set; }
+        public DateTime LastUpdate { get; set; }
         #endregion
 
         #region Constructors

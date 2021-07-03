@@ -39,7 +39,7 @@ namespace App.Menus
         {
             string userInput = Console.ReadLine();  
             Repeat = MenuSelections[userInput];
-            return MenuType.Exit;
+            return MenuType.ExitMenu;
         }
     }
 }

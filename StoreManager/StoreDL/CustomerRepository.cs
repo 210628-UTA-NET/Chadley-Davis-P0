@@ -18,7 +18,7 @@ namespace StoreDL
             throw new System.NotImplementedException();
         }
 
-        public List<Customer> GetAll()
+        public List<Customer> GetAll(Customer match)
         {
             List<Customer> customers = new List<Customer>();
             try
@@ -43,5 +43,6 @@ namespace StoreDL
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

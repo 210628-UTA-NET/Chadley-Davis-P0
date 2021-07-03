@@ -14,7 +14,7 @@ namespace StoreDL
         /// Gets a list of T stored in our database
         /// </summary>
         /// <returns>Returns a list of T</returns>
-        List<T> GetAll();
+        List<T> GetAll(T match);
 
         /// <summary>
         /// It will get a specific T

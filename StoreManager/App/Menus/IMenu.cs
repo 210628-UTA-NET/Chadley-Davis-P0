@@ -19,7 +19,7 @@ namespace App.Menus
         ProductMenu = 7,
         StoreFrontMenu = 8,
         SelectStoreFrontMenu = 9,
-        Exit = 10
+        StoreFrontsMenu = 10
     }
     public interface IMenu
     {

@@ -13,7 +13,9 @@ namespace StoreModels
         public string Description { get; set; }
         public decimal Price { get; set; }
         public Category Category { get; set; }
-
+        public Guid StoreFrontId { get; set; }
+        public StoreFront StoreFront { get; set; }
+        public DateTime LastUpdate { get; set; }
         #endregion
 
         #region Constructors

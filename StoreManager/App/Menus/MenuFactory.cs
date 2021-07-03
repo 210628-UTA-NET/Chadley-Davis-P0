@@ -18,6 +18,7 @@ namespace App.Menus
             { MenuType.AddressMenu, () => new AddressMenu() },
             { MenuType.ContactInformationMenu, () => new ContactInformationMenu() },
             { MenuType.StoreFrontMenu, () => new StoreFrontMenu() },
+            { MenuType.StoreFrontsMenu, () => new StoreFrontsMenu() },
             { MenuType.OrderMenu, () => new OrderMenu() },
             { MenuType.ProductMenu, () => new ProductMenu() },
             { MenuType.DetailMenu, () => new DetailMenu() },
@@ -29,8 +30,9 @@ namespace App.Menus
         }
         public IMenu GetMenu(MenuType menuType)
         {
-            MenuStack.Push(menus[menuType].Invoke());
-            return MenuStack.LastOrDefault();
+            IMenu menu = menus[menuType].Invoke();
+            MenuStack.Push(menu);
+            return menu;
         }
         public IMenu CurrentMenu()
         {
@@ -40,7 +42,7 @@ namespace App.Menus
         {
             IMenu menu;
             MenuStack.TryPop(out menu);
-            return menu;
+            return CurrentMenu();
         }
     }
 }

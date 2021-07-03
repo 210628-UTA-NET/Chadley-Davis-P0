@@ -29,6 +29,7 @@ namespace StoreModels
             }
         }
         public Order Order { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         #endregion
         #region Constructors

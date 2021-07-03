@@ -22,6 +22,7 @@ namespace StoreModels
             }
         }
         public ContactInformation ContactInformation { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         #region Order Properties
         public List<Guid> PendingOrderIds

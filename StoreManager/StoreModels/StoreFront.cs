@@ -27,11 +27,12 @@ namespace StoreModels
             get
             {
                 return Inventory != null
-                    ? Inventory.Keys.Select(product => product.Id).ToList()
+                    ? Inventory.Select(product => product.Id).ToList()
                     : new List<Guid>();
             }
         }
-        public Dictionary<Product, int> Inventory { get; set; }
+        public List<Inventory> Inventory { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         #region Order Properties
 
@@ -95,7 +96,7 @@ namespace StoreModels
         #region Constructors
         public StoreFront()
         {
-            Inventory = new Dictionary<Product, int>();
+            Inventory = new List<Inventory>();
             PendingOrders = new Queue<Order>();
             CompletedOrders = new List<Order>();
             Customers = new HashSet<Customer>();
@@ -105,7 +106,7 @@ namespace StoreModels
         {
             Id = id;
             Name = name;
-            Inventory = new Dictionary<Product, int>();
+            Inventory = new List<Inventory>();
             PendingOrders = new Queue<Order>();
             CompletedOrders = new List<Order>();
             Customers = new HashSet<Customer>();
@@ -120,26 +121,26 @@ namespace StoreModels
         }
 
         #region Inventory Methods
-        public void AddInventory(Product product, int amount)
+        public void AddInventory(Product product, uint amount)
         {
-            if (Inventory.ContainsKey(product))
+            if (Inventory.Exists(p => p.Product == product))
             {
-                Inventory[product] += amount;
+                Inventory.First(p => p.Product == product).Count += amount;
             }
             else
             {
-                Inventory.Add(product, amount);
+                Inventory.Add(new Inventory() { Product = product, Count = amount });
             }
         }
-        public void RemoveInventory(Product product, int amount)
+        public void RemoveInventory(Product product, uint amount)
         {
-            if (Inventory.ContainsKey(product))
+            if (Inventory.Exists(p => p.Product == product))
             {
-                if (Inventory[product] >= amount)
-                    Inventory[product] -= amount;
+                if (Inventory.First(p => p.Product == product).Count >= amount)
+                    Inventory.First(p => p.Product == product).Count -= amount;
                 else
                 {
-                    throw new Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventory[product]}.");
+                    throw new Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventory.First(p => p.Product == product).Count}.");
                 }
             }
             else

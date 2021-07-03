@@ -9,6 +9,9 @@ namespace App.Menus
 {
     public class MenuFactory : IFactory
     {
+
+        Stack<IMenu> MenuStack { get; set; }
+
         Dictionary<MenuType, Func<IMenu>> menus = new Dictionary<MenuType, Func<IMenu>>() {
             { MenuType.MainMenu, () => new MainMenu() },
             { MenuType.CustomerMenu, () => new CustomerMenu() },
@@ -20,9 +23,24 @@ namespace App.Menus
             { MenuType.DetailMenu, () => new DetailMenu() },
             { MenuType.ExitMenu, () => new ExitMenu() }
         };  
-        public IMenu GetMenu(MenuType menu)
+        public MenuFactory()
         {
-            return menus[menu].Invoke();
+            MenuStack = new Stack<IMenu>();
+        }
+        public IMenu GetMenu(MenuType menuType)
+        {
+            MenuStack.Push(menus[menuType].Invoke());
+            return MenuStack.LastOrDefault();
+        }
+        public IMenu CurrentMenu()
+        {
+            return MenuStack.LastOrDefault();
+        }
+        public IMenu LastMenu()
+        {
+            IMenu menu;
+            MenuStack.TryPop(out menu);
+            return menu;
         }
     }
 }

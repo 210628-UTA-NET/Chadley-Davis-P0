@@ -13,18 +13,18 @@ namespace App.Menus
             { MenuType.StoreFrontMenu, () => new OrderMenu() }
         };
 
-        public bool Repeat { get; set; }
+
 
         public CustomerMenu()
         {
-            Repeat = true;
+
         }
         public void Menu()
         {
             throw new System.NotImplementedException();
         }
 
-        public MenuType YourChoice()
+        public MenuType MakeChoice()
         {
             throw new System.NotImplementedException();
         }

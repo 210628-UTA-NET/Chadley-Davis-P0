@@ -12,15 +12,18 @@ namespace App.Menus
 
         public bool Repeat { get; set; }
 
+        static MenuType CurrentType { get; set; } = MenuType.MainMenu;
 
-        Dictionary<string, bool> MenuSelections = new Dictionary<string, bool>() {
+        static Dictionary<string, bool> MenuSelections = new Dictionary<string, bool>() {
             { "Y", false },
             { "N", true }
         };
 
         public ExitMenu()
         {
+            //CurrentType = menu.GetType();
             Repeat = true;
+            
         }
         public void Menu()
         {
@@ -32,11 +35,11 @@ namespace App.Menus
 
         }
 
-        public MenuType YourChoice()
+        public MenuType MakeChoice()
         {
-            string userInput = Console.ReadLine();
+            string userInput = Console.ReadLine();  
             Repeat = MenuSelections[userInput];
-            return MenuType.ExitMenu;
+            return MenuType.Exit;
         }
     }
 }

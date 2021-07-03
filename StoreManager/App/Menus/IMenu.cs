@@ -18,11 +18,11 @@ namespace App.Menus
         OrderMenu = 6,
         ProductMenu = 7,
         StoreFrontMenu = 8,
-        SelectStoreFrontMenu = 9
+        SelectStoreFrontMenu = 9,
+        Exit = 10
     }
     public interface IMenu
     {
-        bool Repeat { get; set; }
         string Header { get; }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace App.Menus
         /// This methog will record the user's choice and change your meny based on their input
         /// </summary>
         /// <returns>Returns a value that will dictate what menu to change to</returns>
-        MenuType YourChoice();
+        MenuType MakeChoice();
 
     }
 }

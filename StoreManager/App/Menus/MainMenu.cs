@@ -14,11 +14,12 @@ namespace App.Menus
             { "1", MenuType.StoreFrontMenu },
             { "0", MenuType.ExitMenu }
         };
+        public MenuType PreviousMenu { get; private set; }
+
         public MainMenu()
         {
-            Repeat = true;
+
         }
-        public bool Repeat { get; set; }
 
         
         public void Menu()
@@ -30,7 +31,7 @@ namespace App.Menus
             Console.WriteLine("[0] Exit");
         }
 
-        public MenuType YourChoice()
+        public MenuType MakeChoice()
         {
             string userInput = Console.ReadLine();
             return MenuSelections[userInput];

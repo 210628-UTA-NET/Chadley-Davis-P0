@@ -9,5 +9,7 @@ namespace App.Menus
     public interface IFactory
     {
         IMenu GetMenu(MenuType menu);
+        IMenu CurrentMenu();
+        IMenu LastMenu();
     }
 }

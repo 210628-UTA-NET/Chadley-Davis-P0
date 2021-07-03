@@ -12,17 +12,17 @@ namespace App.Menus
             { MenuType.AddressMenu, () => new AddressMenu() },
         };
 
-        public bool Repeat { get; set; }
+
         public ContactInformationMenu()
         {
-            Repeat = true;
+
         }
         public void Menu()
         {
             throw new System.NotImplementedException();
         }
 
-        public MenuType YourChoice()
+        public MenuType MakeChoice()
         {
             throw new System.NotImplementedException();
         }

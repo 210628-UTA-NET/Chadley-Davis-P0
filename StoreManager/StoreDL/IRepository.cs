@@ -9,6 +9,7 @@ namespace StoreDL
     /// </summary>
     public interface IRepository<T>
     {
+        DBModel _DBContext { get; }
         /// <summary>
         /// Gets a list of T stored in our database
         /// </summary>

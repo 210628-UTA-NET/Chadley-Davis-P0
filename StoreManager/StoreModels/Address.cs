@@ -4,12 +4,22 @@ namespace StoreModels
 {
     public class Address
     {
-        public string AddressLine1 { get; private set; }
-        public string AddressLine2 { get; private set; }
-        public string City { get; private set; }
-        public string Province { get; private set; }
-        public string Country { get; private set; }
-        public string ZipCode { get; private set; }
+        #region Properties
+        public Guid Id { get; set; }
+        public string AddressLine1 { get; set; }
+        public string AddressLine2 { get; set; }
+        public string City { get; set; }
+        public string Province { get; set; }
+        public string Country { get; set; }
+        public string ZipCode { get; set; }
+
+        #endregion
+
+        #region Constructors
+        public Address()
+        {
+
+        }
         public Address(string addressLine1, string addressLine2, string city, string province, string country, string zipcode)
         {
             AddressLine1 = addressLine1;
@@ -19,9 +29,12 @@ namespace StoreModels
             Country = country;
             ZipCode = zipcode;
         }
+        #endregion
+
+        #region Methods
         public override string ToString()
         {
-            return AddressLine1 
+            return AddressLine1
                 + Environment.NewLine
                 + AddressLine2
                 + Environment.NewLine
@@ -30,7 +43,8 @@ namespace StoreModels
                 + Country + ", " + ZipCode;
         }
 
-        
+        #region Overrides
+
         public override bool Equals(Object obj)
         {
             return obj is Address && this == (Address)obj;
@@ -38,7 +52,7 @@ namespace StoreModels
 
         public override int GetHashCode()
         {
-            return (this.ToString()).GetHashCode();
+            return Id.GetHashCode();
         }
         /// <summary>
         /// Compares Two Addresses for Equality
@@ -48,18 +62,21 @@ namespace StoreModels
         /// <returns>True if Addresses Have Same Name and Category</returns>
         public static bool operator ==(Address x, Address y)
         {
-            return x.AddressLine1 == y.AddressLine1 
-                && x.AddressLine2 == y.AddressLine2 
-                && x.City == y.City
-                && x.Province == y.Province
-                && x.Country == y.Country
-                && x.ZipCode == y.ZipCode;
+            return x.Id == y.Id;
         }
 
         public static bool operator !=(Address x, Address y)
         {
             return !(x == y);
         }
+
+        #endregion
+
+
+        #endregion
+
+
+
     }
 
 }

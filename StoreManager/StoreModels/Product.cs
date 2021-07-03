@@ -6,22 +6,39 @@ namespace StoreModels
 {
     public class Product
     {
-        public int Id { get; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public decimal Price { get; private set; }
-        public Category Category { get; private set; }
-        public Product(int id, string name, string description, Category category)
+        #region Properties
+
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public Category Category { get; set; }
+
+        #endregion
+
+        #region Constructors
+        public Product()
+        {
+
+        }
+        public Product(Guid id, string name, string description, Category category)
         {
             Id = id;
             Name = name;
             Description = description;
             Category = category;
         }
+
+        #endregion
+
+        #region Methods
+
         public void SetPrice(decimal price)
         {
             Price = price;
         }
+
+        #region Overrides
 
         public override bool Equals(Object obj)
         {
@@ -40,13 +57,21 @@ namespace StoreModels
         /// <returns>True if Products Have Same Name and Category</returns>
         public static bool operator ==(Product x, Product y)
         {
-            return x.Name == y.Name && x.Category == y.Category;
+            return x.Id == y.Id;
         }
 
         public static bool operator !=(Product x, Product y)
         {
             return !(x == y);
         }
+
+        #endregion
+
+
+        #endregion
+
+
+
     }
     
 }

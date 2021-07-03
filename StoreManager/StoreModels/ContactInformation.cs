@@ -4,16 +4,41 @@ namespace StoreModels
 {
     public class ContactInformation
     {
-        public string PhoneNumber { get; private set; }
-        public string EmailAddress { get; private set; }
-        public Address Address { get; private set; }
+        #region Properties
+        public Guid Id { get; set; }
+        public string PhoneNumber { get; set; }
+        public string EmailAddress { get; set; }
+        public Guid AddressId
+        {
+            get
+            {
+                return Address != null
+                    ? Address.Id
+                    : Guid.Empty;
+
+            }
+        }
+        public Address Address { get; set; }
+        #endregion
+
+        #region Constructors
+        public ContactInformation()
+        {
+
+        }
         public ContactInformation(string phoneNumber, string emailAddress, Address address)
         {
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
             Address = address;
         }
-        
+        #endregion
+
+        #region Methods
+
+
+        #region Overrides
+
         public override bool Equals(Object obj)
         {
             return obj is ContactInformation && this == (ContactInformation)obj;
@@ -21,7 +46,7 @@ namespace StoreModels
 
         public override int GetHashCode()
         {
-            return (PhoneNumber + EmailAddress).GetHashCode() ^ Address.GetHashCode();
+            return Id.GetHashCode();
         }
         /// <summary>
         /// Compares Two ContactInformations for Equality
@@ -31,14 +56,23 @@ namespace StoreModels
         /// <returns>True if ContactInformations Have Same Name and Category</returns>
         public static bool operator ==(ContactInformation x, ContactInformation y)
         {
-            return x.PhoneNumber == y.PhoneNumber && x.EmailAddress == y.EmailAddress && x.Address == y.Address;
+            return x.Id == y.Id;
         }
 
         public static bool operator !=(ContactInformation x, ContactInformation y)
         {
             return !(x == y);
         }
+        #endregion
+
+
+        #endregion
+
+
+
+
+
     }
-    
+
 
 }

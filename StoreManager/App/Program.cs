@@ -1,96 +1,44 @@
 ﻿using System;
 using StoreModels;
 using System.Collections.Generic;
+using App.Menus;
 
 namespace App
 {
     class Program
     {
+        static bool Continue { get; set; }
+        static IFactory Factory { get; set; }
         static HashSet<Customer> Customers { get; set; }
         static HashSet<StoreFront> StoreFronts { get; set; }
+
+        static Dictionary<MenuType, Func<IMenu>> Menus = new Dictionary<MenuType, Func<IMenu>>() {
+                { MenuType.MainMenu, () => Factory.GetMenu(MenuType.MainMenu) },
+                { MenuType.StoreFrontMenu, () => Factory.GetMenu(MenuType.StoreFrontMenu) },
+                { MenuType.CustomerMenu, () => Factory.GetMenu(MenuType.CustomerMenu) },
+                { MenuType.AddressMenu, () => Factory.GetMenu(MenuType.AddressMenu) },
+                { MenuType.ContactInformationMenu, () => Factory.GetMenu(MenuType.ContactInformationMenu) },
+                { MenuType.DetailMenu, () => Factory.GetMenu(MenuType.ExitMenu) },
+                { MenuType.OrderMenu, () => Factory.GetMenu(MenuType.ExitMenu) },
+                { MenuType.ProductMenu, () => Factory.GetMenu(MenuType.ExitMenu) },
+                { MenuType.SelectStoreFrontMenu, () => Factory.GetMenu(MenuType.ExitMenu) },
+                { MenuType.ExitMenu, () => Factory.GetMenu(MenuType.ExitMenu) }
+            };
         static void Main(string[] args)
         {
-            int flag = 0;
-            do{
-                
-                Console.WriteLine("Enter [1] to Manage Customers.");
-                Console.WriteLine("Enter [2] to Manage StoreFronts.");
-                Console.WriteLine("Enter [0] to Exit.");
+            IMenu currentMenu = new MainMenu();
+            MenuType currentMenuType = MenuType.MainMenu;
+            Factory = new MenuFactory();
 
-                string input =  Console.ReadLine();
-                //flag = 0 if conversion to int fails
-                bool parsed = int.TryParse(input, out flag);
+            do
+            {
+                Console.Clear();
+                Console.WriteLine(currentMenu.Header);
+                currentMenu.Menu();
+                currentMenuType = currentMenu.YourChoice();
+                currentMenu = Menus[currentMenuType].Invoke();
 
-
-                switch(flag){
-                        case 1:
-                            ManageCustomers();
-                        break;
-                        case 2:
-                            ManageStoreFronts();
-                        break;
-                }
-            }while(flag != 0);
-        }
-        static void ManageCustomers()
-        {
-            int flag = 0;
-            do{
-                Console.WriteLine("Enter [1] to Add A New Customers.");
-                Console.WriteLine("Enter [2] to List All Customers.");
-                Console.WriteLine("Enter [3] to Show A Specific Customer's Information.");
-                Console.WriteLine("Enter [4] to Edit An Existing Customer's Address.");
-                Console.WriteLine("Enter [0] to Exit.");
-                switch(flag){
-                    case 1:
-
-                    break;
-                    case 2:
-
-                    break;
-                    case 3:
-
-                    break;
-                    case 4:
-
-                    break;
-                }
-
-
-            }while(flag != 0);
-            int id = Customers.Count;
-            Console.WriteLine("Enter the New Customer's First Name.");
-            string firstName = Console.ReadLine();
-            Console.WriteLine("Enter the New Customer's Last Name.");
-            string lastName = Console.ReadLine();            
-            Customer customer = new Customer(id, firstName, lastName);
-            Customers.Add(customer);            
-            Console.WriteLine($"The ID of {customer.ToString()} is {id}.");
-        }
-        static void ListCustomers()
-        {
-
-        }
-        static void AddNewCustomer()
-        {
-
-        }
-
-        static void EditCustomer()
-        {
-
-        }
-        static void ManageStoreFronts()
-        {
-            int id = StoreFronts.Count;
-            Console.WriteLine("Enter the New Store's Name.");
-            string firstName = Console.ReadLine();
-            Console.WriteLine("Enter the New Customer's Last Name.");
-            string lastName = Console.ReadLine();            
-            Customer customer = new Customer(id, firstName, lastName);
-            Customers.Add(customer);            
-            Console.WriteLine($"The ID of {customer.ToString()} is {id}.");
-            
+            } while (currentMenu.Repeat);
         }
     }
 }

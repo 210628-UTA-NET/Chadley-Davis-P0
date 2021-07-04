@@ -4,6 +4,12 @@
     <ProjectReference Include="..\StoreModels\StoreModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Database\StoreManager.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>

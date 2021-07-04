@@ -1,10 +1,1 @@
-{
-  "Addresses": [],
-  "ContactInformation": [],
-  "Customers": [],
-  "Details": [],
-  "Inventory": [],
-  "Orders": [],
-  "Products": [],
-  "StoreFronts": []
-}
+{"Addresses":[],"ContactInformation":[],"Customers":[],"Details":[],"Orders":[],"Products":[],"StoreFronts":[{"Id":"661873a1-df9a-43bc-827b-a98e77007660","Name":null,"LastUpdate":"0001-01-01T00:00:00"},{"Id":"794b9615-e3b7-41e2-8657-163e4ad89340","Name":null,"LastUpdate":"0001-01-01T00:00:00"}]}

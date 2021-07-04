@@ -9,7 +9,17 @@ namespace StoreDL
 {
     public class DBModel
     {
-        
+        public DBModel()
+        {
+            Addresses = new List<Address>();
+            ContactInformation = new List<ContactInformation>();
+            Customers = new List<Customer>();
+            Details = new List<Detail>();
+            Orders = new List<Order>();
+            Products = new List<Product>();
+            StoreFronts = new List<StoreFront>();
+
+        }
         public List<Address> Addresses { get; set; }
         public List<ContactInformation> ContactInformation { get; set; }
         public List<Customer> Customers { get; set; }

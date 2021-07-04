@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StoreModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,10 @@ namespace App.Menus
         ProductMenu = 7,
         StoreFrontMenu = 8,
         SelectStoreFrontMenu = 9,
-        StoreFrontsMenu = 10
+        StoreFrontsMenu = 10,
+        AddStoreFrontMenu = 11,
+        AddStoreFrontsMenu = 12,
+        None = 13
     }
     public interface IMenu
     {

@@ -12,8 +12,6 @@ namespace App.Menus
 
         public bool Repeat { get; set; }
 
-        static MenuType CurrentType { get; set; } = MenuType.MainMenu;
-
         static Dictionary<string, bool> MenuSelections = new Dictionary<string, bool>() {
             { "Y", false },
             { "N", true }
@@ -21,9 +19,7 @@ namespace App.Menus
 
         public ExitMenu()
         {
-            //CurrentType = menu.GetType();
-            Repeat = true;
-            
+
         }
         public void Menu()
         {
@@ -39,7 +35,7 @@ namespace App.Menus
         {
             string userInput = Console.ReadLine();  
             Repeat = MenuSelections[userInput];
-            return MenuType.ExitMenu;
+            return MenuType.None;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 using StoreModels;
 
 namespace StoreDL
@@ -13,36 +14,19 @@ namespace StoreDL
 
         public DBModel _DBContext { get; set; }
 
-        public Customer Add(Customer p_rest)
+        public Task<Customer> Add(Customer item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Customer> Get(Guid Id)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<Customer> GetAll(Customer match)
+        public Task<List<Customer>> GetAll(Customer match)
         {
-            List<Customer> customers = new List<Customer>();
-            try
-            {
-                _jsonString = File.ReadAllText(_filePath);
-            }
-            catch (System.Exception)
-            {
-                throw new Exception("File path is invalid");
-            }
-            using (FileStream s = File.Open(_filePath, FileMode.Open))
-            {
-                var results = JsonSerializer.DeserializeAsync<List<Customer>>(s);
-                customers.AddRange(results.Result);
-
-                //This will return a list of restaurant from the jsonString that came from 
-            }
-            return customers;
+            throw new NotImplementedException();
         }
-
-        public Customer Get(int Id)
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 }

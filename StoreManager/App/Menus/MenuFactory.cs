@@ -1,4 +1,5 @@
-﻿using StoreModels;
+﻿using StoreDL;
+using StoreModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,40 +10,70 @@ namespace App.Menus
 {
     public class MenuFactory : IFactory
     {
+        static StoreFront StoreFront { get; set; }
+        /// <summary>
+        /// Return null to Return to Previous Menu (Pop off Stack)
+        /// Dynamics to be executed for various function types
+        /// </summary>
+        static Dictionary<MenuType, Func<IMenu, IMenu>> menus = new Dictionary<MenuType, Func<IMenu, IMenu>>() {
+            { MenuType.MainMenu, (currentMenu) => new MainMenu() },
+            { MenuType.CustomerMenu, (currentMenu) => new CustomerMenu() },
+            { MenuType.AddressMenu, (currentMenu) => new AddressMenu() },
+            { MenuType.ContactInformationMenu, (currentMenu) => new ContactInformationMenu() },
+            { MenuType.StoreFrontMenu, (currentMenu) => new StoreFrontMenu(IFactory.DataBaseModel, StoreFront) },
+            { MenuType.StoreFrontsMenu, (currentMenu) => new StoreFrontsMenu(IFactory.DataBaseModel) },
+            { MenuType.OrderMenu, (currentMenu) => new OrderMenu() },
+            { MenuType.ProductMenu, (currentMenu) => new ProductMenu() },
+            { MenuType.DetailMenu, (currentMenu) => new DetailMenu() },
+            { MenuType.AddStoreFrontMenu, (currentMenu) => {
+                AddStoreFrontMenu menu = new AddStoreFrontMenu(IFactory.DataBaseModel);
+                menu.Menu();
+                StoreFront = menu.StoreFront;
+                StoreFrontMenu storeFrontMenu = new StoreFrontMenu(IFactory.DataBaseModel, StoreFront);
+                return menus[MenuType.StoreFrontMenu].Invoke(currentMenu);
+            } },
+            { MenuType.ExitMenu, (currentMenu) => {
+                ExitMenu menu = new ExitMenu();
+                menu.Menu();
+                menu.MakeChoice();
+                if(!menu.Repeat)
+                    Pop();
+                return null;
+            } },
+            { MenuType.None, (currentMenu) => null }
+        };
 
-        Stack<IMenu> MenuStack { get; set; }
-
-        Dictionary<MenuType, Func<IMenu>> menus = new Dictionary<MenuType, Func<IMenu>>() {
-            { MenuType.MainMenu, () => new MainMenu() },
-            { MenuType.CustomerMenu, () => new CustomerMenu() },
-            { MenuType.AddressMenu, () => new AddressMenu() },
-            { MenuType.ContactInformationMenu, () => new ContactInformationMenu() },
-            { MenuType.StoreFrontMenu, () => new StoreFrontMenu() },
-            { MenuType.StoreFrontsMenu, () => new StoreFrontsMenu() },
-            { MenuType.OrderMenu, () => new OrderMenu() },
-            { MenuType.ProductMenu, () => new ProductMenu() },
-            { MenuType.DetailMenu, () => new DetailMenu() },
-            { MenuType.ExitMenu, () => new ExitMenu() }
-        };  
         public MenuFactory()
         {
-            MenuStack = new Stack<IMenu>();
+            IFactory.DataBaseModel = new DBModel();
+            IFactory.MenuStack = new Stack<IMenu>();
         }
         public IMenu GetMenu(MenuType menuType)
         {
-            IMenu menu = menus[menuType].Invoke();
-            MenuStack.Push(menu);
-            return menu;
+            IMenu current = Pop();
+            IMenu previous = Peek();
+            Push(current);
+            IMenu menu = menus[menuType].Invoke(current);
+            if(menu != null)
+                Push(menu);
+            return Peek();
         }
-        public IMenu CurrentMenu()
-        {
-            return MenuStack.LastOrDefault();
-        }
-        public IMenu LastMenu()
+        public static IMenu Pop()
         {
             IMenu menu;
-            MenuStack.TryPop(out menu);
-            return CurrentMenu();
+            IFactory.MenuStack.TryPop(out menu);
+            return menu;
         }
+
+        public void Push(IMenu menu)
+        {
+            IFactory.MenuStack.Push(menu);
+        }
+        public IMenu Peek()
+        {
+            IFactory.MenuStack.TryPeek(out IMenu menu);
+            return menu;
+        }
+
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json.Serialization;
 
 namespace StoreModels
 {
@@ -10,6 +10,7 @@ namespace StoreModels
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
+        [JsonIgnore]
         public Guid ContactInformationId
         {
             get
@@ -20,8 +21,10 @@ namespace StoreModels
             }
         }
 
+        [JsonIgnore]
         public ContactInformation ContactInformation { get; set; }
 
+        [JsonIgnore]
         public List<Guid> InventoryIds
         {
             get
@@ -31,11 +34,13 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public List<Inventory> Inventory { get; set; }
         public DateTime LastUpdate { get; set; }
 
         #region Order Properties
 
+        [JsonIgnore]
         public List<Guid> OrderIds
         {
             get
@@ -45,6 +50,7 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public List<Order> Orders
         {
             get
@@ -55,6 +61,7 @@ namespace StoreModels
                 return orders;
             }
         }
+        [JsonIgnore]
         public List<Guid> PendingOrderIds
         {
             get
@@ -64,8 +71,10 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public Queue<Order> PendingOrders { get; set; }
 
+        [JsonIgnore]
         public List<Guid> CompletedOrderIds
         {
             get
@@ -76,10 +85,12 @@ namespace StoreModels
             }
         }
 
+        [JsonIgnore]
         public List<Order> CompletedOrders { get; set; }
 
         #endregion
 
+        [JsonIgnore]
         public List<Guid> CustomerIds
         {
             get
@@ -89,7 +100,7 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
-
+        [JsonIgnore]
         public HashSet<Customer> Customers { get; set; }
         #endregion
 

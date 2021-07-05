@@ -23,7 +23,9 @@ namespace App.Menus
         StoreFrontsMenu = 10,
         AddStoreFrontMenu = 11,
         AddStoreFrontsMenu = 12,
-        None = 13
+        None = 13,
+        GetStoreFrontMenu = 14,
+        SearchStoreFrontMenu = 15
     }
     public interface IMenu
     {

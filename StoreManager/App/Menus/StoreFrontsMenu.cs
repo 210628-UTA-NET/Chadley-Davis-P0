@@ -3,23 +3,24 @@ using StoreDL;
 using StoreModels;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace App.Menus
 {
     internal class StoreFrontsMenu : IMenu
     {
-        
+
         public string Header { get { return Constants.StoreList; } }
 
-        Dictionary<string, MenuType> MenuSelections = new Dictionary<string, MenuType>(){
-            { "A", MenuType.StoreFrontsMenu },
-            { "B", MenuType.StoreFrontsMenu },
-            { "C", MenuType.AddStoreFrontMenu },
-            { "0", MenuType.ExitMenu }
+        Dictionary<string, Func<MenuType>> MenuSelections = new Dictionary<string, Func<MenuType>>(){
+            { "A", () => MenuType.SearchStoreFrontMenu },
+            { "B", () => MenuType.GetStoreFrontMenu },
+            { "C", () => MenuType.AddStoreFrontMenu },
+            { "0", () => MenuType.ExitMenu }
         };
 
         public List<StoreFront> StoreFronts { get; set; }
-
+        public StoreFront SelectedStoreFront { get; set; }
         private StoreFrontBL storeFrontBL { get; set; }
 
         public StoreFrontsMenu(DBModel dB)
@@ -46,8 +47,16 @@ namespace App.Menus
         public MenuType MakeChoice()
         {
             string userInput = Console.ReadLine();
-
-            return MenuSelections[userInput];
+            if (Regex.IsMatch(userInput, @"(?!0)^\d+$"))
+            {
+                int.TryParse(userInput, out int index);
+                SelectedStoreFront = StoreFronts[index];
+                return MenuType.StoreFrontMenu;
+            }
+            else
+            {
+                return MenuSelections[userInput].Invoke();
+            }
         }
     }
 }

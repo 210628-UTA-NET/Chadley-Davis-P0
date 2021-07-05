@@ -11,6 +11,8 @@ namespace App.Menus
     public class MenuFactory : IFactory
     {
         static StoreFront StoreFront { get; set; }
+
+        #region MenuConstructors
         /// <summary>
         /// Return null to Return to Previous Menu (Pop off Stack)
         /// Dynamics to be executed for various function types
@@ -32,6 +34,12 @@ namespace App.Menus
                 StoreFrontMenu storeFrontMenu = new StoreFrontMenu(IFactory.DataBaseModel, StoreFront);
                 return menus[MenuType.StoreFrontMenu].Invoke(currentMenu);
             } },
+            { MenuType.SearchStoreFrontMenu, (currentMenu) => {
+                SearchStoreFrontMenu menu = new SearchStoreFrontMenu(IFactory.DataBaseModel);
+                menu.Menu();
+                menu.MakeChoice();
+                return null;
+            } },
             { MenuType.ExitMenu, (currentMenu) => {
                 ExitMenu menu = new ExitMenu();
                 menu.Menu();
@@ -42,6 +50,7 @@ namespace App.Menus
             } },
             { MenuType.None, (currentMenu) => null }
         };
+        #endregion
 
         public MenuFactory()
         {

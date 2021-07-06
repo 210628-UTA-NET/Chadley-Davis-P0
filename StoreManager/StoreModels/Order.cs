@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using StoreModels;
 
 namespace StoreModels
@@ -20,22 +21,19 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public List<Detail> Details { get; set; }
-        public Guid LocationId
-        {
-            get
-            {
-                return Location != null
-                    ? Location.Id
-                    : Guid.Empty;
-            }
-        }
+        public Guid LocationId { get { return Location != null ? Location.Id : Guid.Empty; } }
+
+        [JsonIgnore]
         public Address Location { get; set; }
         public DateTime OrderDate { get; set; }
-        public Guid CustomertId { get; set; }
+        public Guid CustomertId { get { return Customer != null ? Customer.Id : Guid.Empty; } }
+        [JsonIgnore]
         public Customer Customer { get; set; }
 
-        public Guid StoreFrontId { get; set; }
+        public Guid StoreFrontId { get { return StoreFront != null ? StoreFront.Id : Guid.Empty; } }
+        [JsonIgnore]
         public StoreFront StoreFront { get; set; }
         public DateTime LastUpdate { get; set; }
         #endregion

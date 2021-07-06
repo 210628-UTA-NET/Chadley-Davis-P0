@@ -27,20 +27,14 @@ namespace StoreDL
                 using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
                 {
                     results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
-                    await createStream.DisposeAsync();
-                    if (results.StoreFronts == null)
-                        results.StoreFronts = new List<StoreFront>();
-                    if(storeFront.Name == null)
-                    {
-                        storeFront.Name = "";
-                    }
+
                     results.StoreFronts.Add(storeFront);
+                    createStream.Dispose();
                 }
 
                 using (FileStream updateStream = File.OpenWrite(Environment.CurrentDirectory + _filePath))
                 {
-                    await JsonSerializer.SerializeAsync<DBModel>(updateStream, results);
-                    await updateStream.DisposeAsync();
+                    var jsonresult = JsonSerializer.SerializeAsync<DBModel>(updateStream, results);
                 }
                 
             }
@@ -59,10 +53,11 @@ namespace StoreDL
             {
                 using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
                 {
+                    
                     var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
+
                     if (results.StoreFronts != null)
                         storeFronts = results.StoreFronts.Where(s => s.Name != null && (s.Name == "" || s.Name.Contains(match.Name))).ToList();
-                    await createStream.DisposeAsync();
                 }
                 
             }
@@ -80,11 +75,12 @@ namespace StoreDL
             StoreFront storeFront = new StoreFront();
             try
             {
-                using (FileStream createStream = File.OpenWrite(Environment.CurrentDirectory + _filePath))
+                using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
                 {
                     var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
-                    storeFront = results.StoreFronts.First(sf => sf.Id == Id);
-                    await createStream.DisposeAsync();
+
+                    if(results != null)
+                        storeFront = results.StoreFronts.First(sf => sf.Id == Id);
                 }
             }
             catch (System.Exception)
@@ -95,6 +91,32 @@ namespace StoreDL
             return storeFront;
         }
 
+        public async Task<StoreFront> Update(StoreFront storeFront)
+        {
 
+            try
+            {
+                DBModel results = new DBModel();
+                using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
+                {
+                    results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
+                }
+                bool removed = results.StoreFronts.Remove(storeFront); 
+                results.StoreFronts.Add(storeFront);
+                using (FileStream updateStream = File.OpenWrite(Environment.CurrentDirectory + _filePath))
+                {
+                    await JsonSerializer.SerializeAsync<DBModel>(updateStream, results);
+                }
+                
+
+            }
+            catch (System.Exception)
+            {
+                throw new Exception("File path is invalid");
+            }
+
+            return storeFront;
+
+        }
     }
 }

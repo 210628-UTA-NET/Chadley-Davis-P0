@@ -33,6 +33,8 @@ namespace App.Menus
         public MenuType MakeChoice()
         {
             string userInput = Console.ReadLine();
+            if (!MenuSelections.ContainsKey(userInput))
+                return MenuType.None;
             return MenuSelections[userInput];
         }
     }

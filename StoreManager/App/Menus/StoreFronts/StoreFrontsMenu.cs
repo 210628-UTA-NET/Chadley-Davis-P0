@@ -35,10 +35,10 @@ namespace App.Menus.StoreFronts
         {
 
             storeFrontBL = new StoreFrontBL(dB);
-            var storeFronts = storeFrontBL.GetAll(new StoreFront() { Id = StoreFrontId, Name = SearchTerm });
-            while (!storeFronts.IsCompleted);
+            var result = storeFrontBL.GetAll(new StoreFront() { Id = StoreFrontId, Name = SearchTerm != null ? SearchTerm : "" });
+            while (!result.IsCompleted);
             
-            StoreFronts = storeFronts.Result;
+            StoreFronts = result.Result;
 
 
         }
@@ -65,7 +65,7 @@ namespace App.Menus.StoreFronts
             if (Regex.IsMatch(userInput, @"(?!0)^\d+$"))
             {
                 int.TryParse(userInput, out int index);
-                StoreFront = StoreFronts[index];
+                StoreFront = StoreFronts[index - 1];
                 return MenuType.StoreFrontMenu;
             }
             else if (userInput == "B")
@@ -80,6 +80,8 @@ namespace App.Menus.StoreFronts
             else
             {
 
+                if (!MenuSelections.ContainsKey(userInput))
+                    return MenuType.None;
                 return MenuSelections[userInput].Invoke();
             }
         }

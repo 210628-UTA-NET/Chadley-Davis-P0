@@ -30,5 +30,6 @@ namespace StoreDL
         /// <param name="p_rest">This is the T object that will be added to the database</param>
         /// <returns>Will return the T object we just added</returns>
         Task<T> Add(T item);
+        Task<T> Update(T item);
     }
 }

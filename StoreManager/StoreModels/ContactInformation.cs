@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace StoreModels
 {
@@ -17,7 +18,12 @@ namespace StoreModels
                     : Guid.Empty;
 
             }
+            set
+            {
+                Address.Id = value;
+            }
         }
+        [JsonIgnore]
         public Address Address { get; set; }
         public DateTime LastUpdate { get; set; }
         #endregion
@@ -25,7 +31,7 @@ namespace StoreModels
         #region Constructors
         public ContactInformation()
         {
-
+            Address = new Address();
         }
         public ContactInformation(string phoneNumber, string emailAddress, Address address)
         {
@@ -39,6 +45,16 @@ namespace StoreModels
 
 
         #region Overrides
+
+        public override string ToString()
+        {
+            return Address != null 
+                    ? (Address.ToString() + Environment.NewLine) 
+                    : ""
+                + EmailAddress
+                + Environment.NewLine
+                + $"Phone: {PhoneNumber}";
+        }
 
         public override bool Equals(Object obj)
         {

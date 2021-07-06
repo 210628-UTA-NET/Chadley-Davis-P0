@@ -17,19 +17,19 @@ namespace StoreBL
 
         IRepository<StoreFront> Repo { get; set; }
 
-        public override StoreFront Add(StoreFront item)
+        public override async Task<StoreFront> Add(StoreFront item)
         {
-            var result = Repo.Add(item);
-            Repo._DBContext.StoreFronts.Add(result.Result);
-            return result.Result;
+            var result = await Repo.Add(item);
+            Repo._DBContext.StoreFronts.Add(result);
+            return result;
         }
 
-        public override StoreFront Get(StoreFront item)
+        public override async Task<StoreFront> Get(StoreFront item)
         {
             throw new NotImplementedException();
         }
 
-        public async override Task<List<StoreFront>> GetAll(StoreFront searchItem)
+        public override async Task<List<StoreFront>> GetAll(StoreFront searchItem)
         {
             var result = await Repo.GetAll(searchItem);
             Repo._DBContext.StoreFronts.AddRange(result);
@@ -37,14 +37,15 @@ namespace StoreBL
         }
 
 
-        public override void Remove(StoreFront item)
+        public override async Task Remove(StoreFront item)
         {
             throw new NotImplementedException();
         }
 
-        public override StoreFront Update(StoreFront item)
+        public override async Task<StoreFront> Update(StoreFront item)
         {
-            throw new NotImplementedException();
+            StoreFront result = await Repo.Update(item);
+            return result;
         }
     }
 }

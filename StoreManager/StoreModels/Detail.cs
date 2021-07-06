@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace StoreModels
 {
@@ -17,6 +18,7 @@ namespace StoreModels
                     : Guid.Empty;
             }
         }
+        [JsonIgnore]
         public Product Product { get; set; }
         public int Quantity { get; set; }
         public Guid OrderId
@@ -28,6 +30,7 @@ namespace StoreModels
                     : Guid.Empty;
             }
         }
+        [JsonIgnore]
         public Order Order { get; set; }
         public DateTime LastUpdate { get; set; }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StoreModels
@@ -12,6 +13,7 @@ namespace StoreModels
         public Guid Id { get; set; }
         public Guid ProductId { get { return Product != null ? Product.Id : Guid.Empty; } }
 
+        [JsonIgnore]
         public Product Product { get; set; }
 
         public uint Count { get; set; }

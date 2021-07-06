@@ -19,12 +19,17 @@ namespace StoreDL
             throw new NotImplementedException();
         }
 
-        public async Task<Customer> Get(Guid Id)
+        public Task<Customer> Get(Guid Id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Task<List<Customer>> GetAll(Customer match)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Customer> Update(Customer item)
         {
             throw new NotImplementedException();
         }

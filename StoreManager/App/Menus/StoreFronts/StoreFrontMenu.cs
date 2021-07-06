@@ -11,7 +11,7 @@ namespace App.Menus.StoreFronts
         public string Header { get { return Constants.StoreFront; } }
 
         Dictionary<string, MenuType> MenuSelections = new Dictionary<string, MenuType>(){
-            { "1", MenuType.StoreFrontMenu },
+            { "D", MenuType.EditStoreFrontMenu },
             { "0", MenuType.ExitMenu }
         };
 
@@ -26,19 +26,34 @@ namespace App.Menus.StoreFronts
         {
             Console.WriteLine("Welcome to the Store Manager");
             Console.WriteLine();
-            Console.WriteLine("Store Info");
-            Console.Write($"Store Name: {StoreFront.Id}");
+            if(StoreFront != null)
+            {
+                Console.WriteLine("Store Info");
+
+                Console.WriteLine($"Store Id: {StoreFront.Id}");
+                Console.WriteLine($"Store Name: {StoreFront.Name}");
+                if (StoreFront.ContactInformation != null)
+                {
+                    Console.WriteLine($"Contact Information: ");
+                    Console.WriteLine(StoreFront.ContactInformation.ToString());
+
+                }
+
+            }
             Console.WriteLine("Please select an option.");
 
-            Console.WriteLine("[1] Manage Products");
-            Console.WriteLine("[2] Manage Customers");
+            Console.WriteLine("[A] Manage Products");
+            Console.WriteLine("[B] Manage Inventory");
+            Console.WriteLine("[C] Manage Customers");
+            Console.WriteLine("[D] Manage Store");
             Console.WriteLine("[0] Exit");
         }
 
         public MenuType MakeChoice()
         {
             string userInput = Console.ReadLine();
-            
+            if (!MenuSelections.ContainsKey(userInput))
+                return MenuType.None;
             return MenuSelections[userInput];
         }
     }

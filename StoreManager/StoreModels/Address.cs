@@ -32,6 +32,8 @@ namespace StoreModels
         #endregion
 
         #region Methods
+        #region Overrides
+
         public override string ToString()
         {
             return AddressLine1
@@ -42,8 +44,6 @@ namespace StoreModels
                 + Environment.NewLine
                 + Country + ", " + ZipCode;
         }
-
-        #region Overrides
 
         public override bool Equals(Object obj)
         {

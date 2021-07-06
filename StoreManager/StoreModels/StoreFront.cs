@@ -10,7 +10,7 @@ namespace StoreModels
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
-        [JsonIgnore]
+
         public Guid ContactInformationId
         {
             get
@@ -19,21 +19,50 @@ namespace StoreModels
                     ? ContactInformation.Id
                     : Guid.Empty;
             }
+            set
+            {
+
+            }
         }
 
         [JsonIgnore]
         public ContactInformation ContactInformation { get; set; }
 
+
+        public List<Guid> ProductIds
+        {
+            get
+            {
+                return Products != null
+                    ? Products.Select(product => product.Id).ToList()
+                    : new List<Guid>();
+            }
+            set
+            {
+
+            }
+        }
+
+
         [JsonIgnore]
+        public List<Product> Products { get; set; }
+
         public List<Guid> InventoryIds
         {
             get
             {
                 return Inventory != null
-                    ? Inventory.Select(product => product.Id).ToList()
+                    ? Inventory.Select(inventory => inventory.Id).ToList()
                     : new List<Guid>();
             }
+            set 
+            {
+            
+            }
+
         }
+
+
         [JsonIgnore]
         public List<Inventory> Inventory { get; set; }
         public DateTime LastUpdate { get; set; }
@@ -61,7 +90,7 @@ namespace StoreModels
                 return orders;
             }
         }
-        [JsonIgnore]
+
         public List<Guid> PendingOrderIds
         {
             get
@@ -70,11 +99,16 @@ namespace StoreModels
                     ? PendingOrders.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+
+            }
         }
+
         [JsonIgnore]
         public Queue<Order> PendingOrders { get; set; }
 
-        [JsonIgnore]
+
         public List<Guid> CompletedOrderIds
         {
             get
@@ -83,14 +117,16 @@ namespace StoreModels
                     ? CompletedOrders.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+
+            }
         }
 
         [JsonIgnore]
         public List<Order> CompletedOrders { get; set; }
 
         #endregion
-
-        [JsonIgnore]
         public List<Guid> CustomerIds
         {
             get
@@ -99,28 +135,38 @@ namespace StoreModels
                     ? Customers.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+
+            }
         }
+
+
         [JsonIgnore]
-        public HashSet<Customer> Customers { get; set; }
+        public List<Customer> Customers { get; set; }
         #endregion
 
         #region Constructors
         public StoreFront()
         {
+            Id = Guid.Empty;
+            Name = "";
+            ContactInformation = new ContactInformation();
             Inventory = new List<Inventory>();
             PendingOrders = new Queue<Order>();
             CompletedOrders = new List<Order>();
-            Customers = new HashSet<Customer>();
-
+            Customers = new List<Customer>();
+            Products = new List<Product>();
         }
         public StoreFront(Guid id, string name)
         {
             Id = id;
             Name = name;
+            ContactInformation = new ContactInformation();
             Inventory = new List<Inventory>();
             PendingOrders = new Queue<Order>();
             CompletedOrders = new List<Order>();
-            Customers = new HashSet<Customer>();
+            Customers = new List<Customer>();
         }
 
         #endregion

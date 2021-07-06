@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace StoreModels
 {
@@ -20,7 +21,12 @@ namespace StoreModels
                     ? ContactInformation.Id
                     : Guid.Empty;
             }
+            set
+            {
+
+            }
         }
+        [JsonIgnore]
         public ContactInformation ContactInformation { get; set; }
         public DateTime LastUpdate { get; set; }
 
@@ -34,6 +40,7 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public Queue<Order> PendingOrders { get; set; }
 
         public List<Guid> CompletedOrderIds
@@ -45,6 +52,7 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public List<Order> CompletedOrders { get; set; }
         public List<Guid> OrderIds
         {
@@ -55,6 +63,7 @@ namespace StoreModels
                     : new List<Guid>();
             }
         }
+        [JsonIgnore]
         public List<Order> Orders
         {
             get

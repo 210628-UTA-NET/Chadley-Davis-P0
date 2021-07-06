@@ -5,6 +5,7 @@ using App.Menus.Details;
 using App.Menus.Orders;
 using App.Menus.Products;
 using App.Menus.StoreFronts;
+using StoreBL;
 using StoreDL;
 using StoreModels;
 using System;
@@ -18,7 +19,7 @@ namespace App.Menus
     public class MenuFactory : IFactory
     {
         static StoreFront StoreFront { get; set; }
-
+        static StoreFrontBL StoreFrontBL { get; set; }
         #region MenuConstructors
         /// <summary>
         /// Return null to Return to Previous Menu (Pop off Stack)
@@ -34,11 +35,13 @@ namespace App.Menus
             { MenuType.OrderMenu, (currentMenu) => new OrderMenu() },
             { MenuType.ProductMenu, (currentMenu) => new ProductMenu() },
             { MenuType.DetailMenu, (currentMenu) => new DetailMenu() },
+            { MenuType.EditStoreFrontMenu, (currentMenu) => new EditStoreFrontMenu(IFactory.DataBaseModel, ((StoreFrontMenu)currentMenu).StoreFront) },
             { MenuType.AddStoreFrontMenu, (currentMenu) =>
             {
                 AddStoreFrontMenu menu = new AddStoreFrontMenu(IFactory.DataBaseModel);
                 menu.Menu();
                 StoreFront = menu.StoreFront;
+                ((StoreFrontsMenu)currentMenu).StoreFront = StoreFront;
                 return menus[MenuType.StoreFrontMenu].Invoke(currentMenu);
             } },
             { MenuType.SearchStoreFrontMenu, (currentMenu) => {

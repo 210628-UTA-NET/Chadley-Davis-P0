@@ -15,14 +15,14 @@ namespace StoreBL
         {
             dBModel = dB;
         }
-        public abstract T Add(T item);
+        public abstract Task<T> Add(T item);
 
-        public abstract T Get(T item);
+        public abstract Task<T> Get(T item);
 
         public abstract Task<List<T>> GetAll(T searchItem);
 
-        public abstract void Remove(T item);
+        public abstract Task Remove(T item);
 
-        public abstract T Update(T item);
+        public abstract Task<T> Update(T item);
     }
 }

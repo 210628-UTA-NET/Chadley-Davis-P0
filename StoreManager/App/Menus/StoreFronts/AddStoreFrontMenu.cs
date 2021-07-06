@@ -12,8 +12,7 @@ namespace App.Menus.StoreFronts
     public class AddStoreFrontMenu : IMenu
     {
         StoreFrontBL storeFrontBL { get; set; }
-        StoreFront storeFront;
-        public StoreFront StoreFront { get { return storeFront; } }
+        public StoreFront StoreFront { get; set; }
         public string Header { get { return Constants.AddStore; } }
         public DBModel dBContext { get; set; } 
         public AddStoreFrontMenu(DBModel dB)
@@ -28,12 +27,15 @@ namespace App.Menus.StoreFronts
 
         public void Menu()
         {
-            storeFront = new StoreFront()
+            StoreFront = new StoreFront()
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                Name = "",
+                LastUpdate = DateTime.Now
             };
             storeFrontBL = new StoreFrontBL(dBContext);
-            storeFrontBL.Add(storeFront);
+            storeFrontBL.Add(StoreFront);
+
             //No Output
         }
     }

@@ -33,7 +33,12 @@ namespace App.Menus
 
         public MenuType MakeChoice()
         {
-            string userInput = Console.ReadLine();  
+            string userInput = Console.ReadLine();
+
+            while (!MenuSelections.ContainsKey(userInput))
+            {
+                Console.WriteLine("Please enter a valid response.");
+            }
             Repeat = MenuSelections[userInput];
             return MenuType.None;
         }

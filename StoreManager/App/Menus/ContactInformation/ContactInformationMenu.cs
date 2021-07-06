@@ -6,7 +6,7 @@ namespace App.Menus.ContactInformation
 {
     internal class ContactInformationMenu : IMenu
     {
-        public string Header { get { return Constants.Main; } }
+        public string Header { get { return Constants.Contact; } }
 
         Dictionary<MenuType, Func<IMenu>> menus = new Dictionary<MenuType, Func<IMenu>>() {
             { MenuType.MainMenu, () => new MainMenu() },

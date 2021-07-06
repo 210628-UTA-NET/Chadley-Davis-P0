@@ -1,12 +1,11 @@
-﻿namespace App.Menus
+﻿namespace App.Menus.Orders
 {
-    internal class DetailMenu : IMenu
+    internal class OrderMenu : IMenu
     {
-        public string Header { get { return Constants.Detail; } }
+        public string Header { get { return Constants.Order; } }
 
 
-
-        public DetailMenu()
+        public OrderMenu()
         {
 
         }

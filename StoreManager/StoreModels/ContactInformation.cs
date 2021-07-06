@@ -57,7 +57,7 @@ namespace StoreModels
         /// <returns>True if ContactInformations Have Same Name and Category</returns>
         public static bool operator ==(ContactInformation x, ContactInformation y)
         {
-            return x.Id == y.Id;
+            return x?.Id == y?.Id;
         }
 
         public static bool operator !=(ContactInformation x, ContactInformation y)
@@ -68,10 +68,6 @@ namespace StoreModels
 
 
         #endregion
-
-
-
-
 
     }
 

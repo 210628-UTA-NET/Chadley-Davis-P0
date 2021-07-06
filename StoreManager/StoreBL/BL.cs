@@ -19,7 +19,7 @@ namespace StoreBL
 
         public abstract T Get(T item);
 
-        public abstract List<T> GetAll(T searchItem);
+        public abstract Task<List<T>> GetAll(T searchItem);
 
         public abstract void Remove(T item);
 

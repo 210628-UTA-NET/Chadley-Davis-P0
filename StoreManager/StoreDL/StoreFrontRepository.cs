@@ -11,7 +11,7 @@ namespace StoreDL
     public class StoreFrontRepository : IRepository<StoreFront>
     {
         private const string _filePath = "/../../../../StoreDL/Database/StoreManager.json";
-        private string _jsonString;
+
 
         public DBModel _DBContext { get; set; }
 
@@ -23,16 +23,25 @@ namespace StoreDL
         {
             try
             {
-                using FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath);
-                DBModel results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
-                await createStream.DisposeAsync();
-                results.StoreFronts.Add(storeFront);
-                using FileStream updateStream = File.OpenWrite(Environment.CurrentDirectory + _filePath);
-                await JsonSerializer.SerializeAsync<DBModel>(updateStream, results);
-                await updateStream.DisposeAsync();
-                //storeFronts = results.StoreFronts;
+                DBModel results = new DBModel();
+                using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
+                {
+                    results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
+                    await createStream.DisposeAsync();
+                    if (results.StoreFronts == null)
+                        results.StoreFronts = new List<StoreFront>();
+                    if(storeFront.Name == null)
+                    {
+                        storeFront.Name = "";
+                    }
+                    results.StoreFronts.Add(storeFront);
+                }
 
-
+                using (FileStream updateStream = File.OpenWrite(Environment.CurrentDirectory + _filePath))
+                {
+                    await JsonSerializer.SerializeAsync<DBModel>(updateStream, results);
+                    await updateStream.DisposeAsync();
+                }
                 
             }
             catch (System.Exception)
@@ -48,10 +57,14 @@ namespace StoreDL
             List<StoreFront> storeFronts = new List<StoreFront>();
             try
             {
-                using FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath);
-                var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
-                storeFronts = results.StoreFronts;
-                await createStream.DisposeAsync();
+                using (FileStream createStream = File.OpenRead(Environment.CurrentDirectory + _filePath))
+                {
+                    var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
+                    if (results.StoreFronts != null)
+                        storeFronts = results.StoreFronts.Where(s => s.Name != null && (s.Name == "" || s.Name.Contains(match.Name))).ToList();
+                    await createStream.DisposeAsync();
+                }
+                
             }
             catch (System.Exception)
             {
@@ -67,10 +80,12 @@ namespace StoreDL
             StoreFront storeFront = new StoreFront();
             try
             {
-                using FileStream createStream = File.OpenWrite(_filePath);
-                var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
-                storeFront = results.StoreFronts.First(sf => sf.Id == Id);
-                await createStream.DisposeAsync();
+                using (FileStream createStream = File.OpenWrite(Environment.CurrentDirectory + _filePath))
+                {
+                    var results = await JsonSerializer.DeserializeAsync<DBModel>(createStream);
+                    storeFront = results.StoreFronts.First(sf => sf.Id == Id);
+                    await createStream.DisposeAsync();
+                }
             }
             catch (System.Exception)
             {

@@ -7,18 +7,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace App.Menus
+namespace App.Menus.StoreFronts
 {
     internal class SearchStoreFrontMenu
     {
-        public StoreFront StoreFront { get; set; }
         public string Header { get { return Constants.StoreFront; } }
-
-
-        private List<StoreFront> storeFronts { get; set; }
-        private int selectedIndex { get; set; }
-        public StoreFront SelectedStoreFront { get { return storeFronts[selectedIndex]; } }
-        public SearchStoreFrontMenu(DBModel dB, string searchTerm)
+        public string SearchTerm { get; set; }
+        public SearchStoreFrontMenu()
         {
 
         }
@@ -29,7 +24,7 @@ namespace App.Menus
 
         public MenuType MakeChoice()
         {
-            string userInput = Console.ReadLine();
+            SearchTerm = Console.ReadLine();
             //If the input is non-zero number
 
 

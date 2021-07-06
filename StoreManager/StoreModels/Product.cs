@@ -59,7 +59,7 @@ namespace StoreModels
         /// <returns>True if Products Have Same Name and Category</returns>
         public static bool operator ==(Product x, Product y)
         {
-            return x.Id == y.Id;
+            return x?.Id == y?.Id;
         }
 
         public static bool operator !=(Product x, Product y)

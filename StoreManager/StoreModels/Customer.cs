@@ -119,7 +119,7 @@ namespace StoreModels
         /// <returns>True if Customers Have Same Id</returns>
         public static bool operator ==(Customer x, Customer y)
         {
-            return x.Id == y.Id;
+            return x?.Id == y?.Id;
         }
 
         public static bool operator !=(Customer x, Customer y)
@@ -132,11 +132,6 @@ namespace StoreModels
 
 
         #endregion
-
-
-
-
-
 
     }
     

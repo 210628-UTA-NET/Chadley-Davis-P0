@@ -62,7 +62,7 @@ namespace StoreModels
         /// <returns>True if Addresses Have Same Name and Category</returns>
         public static bool operator ==(Address x, Address y)
         {
-            return x.Id == y.Id;
+            return x?.Id == y?.Id;
         }
 
         public static bool operator !=(Address x, Address y)
@@ -74,8 +74,6 @@ namespace StoreModels
 
 
         #endregion
-
-
 
     }
 

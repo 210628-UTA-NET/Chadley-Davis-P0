@@ -3,7 +3,7 @@ using StoreModels;
 using System;
 using System.Collections.Generic;
 
-namespace App.Menus
+namespace App.Menus.StoreFronts
 {
     internal class StoreFrontMenu : IMenu
     {

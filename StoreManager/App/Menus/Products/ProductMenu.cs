@@ -1,4 +1,4 @@
-﻿namespace App.Menus
+﻿namespace App.Menus.Products
 {
     internal class ProductMenu : IMenu
     {

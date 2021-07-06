@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace App.Menus
+namespace App.Menus.StoreFronts
 {
     public class AddStoreFrontMenu : IMenu
     {

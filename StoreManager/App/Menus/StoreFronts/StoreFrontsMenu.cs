@@ -3,34 +3,48 @@ using StoreDL;
 using StoreModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace App.Menus
+namespace App.Menus.StoreFronts
 {
     internal class StoreFrontsMenu : IMenu
     {
 
         public string Header { get { return Constants.StoreList; } }
-
+        static string SearchTerm { get; set; }
+        static Guid StoreFrontId { get; set; }
         Dictionary<string, Func<MenuType>> MenuSelections = new Dictionary<string, Func<MenuType>>(){
-            { "A", () => MenuType.SearchStoreFrontMenu },
-            { "B", () => MenuType.GetStoreFrontMenu },
+            { "A", () => {
+                SearchStoreFrontMenu menu = new SearchStoreFrontMenu();
+                menu.Menu();
+                menu.MakeChoice();
+                SearchTerm = menu.SearchTerm;                
+                return MenuType.None;
+            } },
+            { "B", () => MenuType.StoreFrontMenu },
             { "C", () => MenuType.AddStoreFrontMenu },
             { "0", () => MenuType.ExitMenu }
         };
 
-        public List<StoreFront> StoreFronts { get; set; }
-        public StoreFront SelectedStoreFront { get; set; }
+        static List<StoreFront> StoreFronts { get; set; }
+        public StoreFront StoreFront { get; set; }
         private StoreFrontBL storeFrontBL { get; set; }
-
+        private static DBModel dbModel { get; set; }
         public StoreFrontsMenu(DBModel dB)
         {
 
             storeFrontBL = new StoreFrontBL(dB);
-            StoreFronts = storeFrontBL.GetAll(new StoreFront());
+            var storeFronts = storeFrontBL.GetAll(new StoreFront() { Id = StoreFrontId, Name = SearchTerm });
+            while (!storeFronts.IsCompleted);
+            
+            StoreFronts = storeFronts.Result;
+
+
         }
         public void Menu()
         {
+
             Console.WriteLine();
             Console.WriteLine("Please select an option.");
             Console.WriteLine("[A] Search Store By Name");
@@ -47,14 +61,25 @@ namespace App.Menus
         public MenuType MakeChoice()
         {
             string userInput = Console.ReadLine();
+            //if non-zero integer
             if (Regex.IsMatch(userInput, @"(?!0)^\d+$"))
             {
                 int.TryParse(userInput, out int index);
-                SelectedStoreFront = StoreFronts[index];
+                StoreFront = StoreFronts[index];
                 return MenuType.StoreFrontMenu;
+            }
+            else if (userInput == "B")
+            {
+                GetStoreFrontMenu getSFMenu = new GetStoreFrontMenu();
+                getSFMenu.Menu();
+                getSFMenu.MakeChoice();
+                if(getSFMenu.StoreFrontId != Guid.Empty)
+                    StoreFront = StoreFronts.FirstOrDefault(sf => sf.Id == getSFMenu.StoreFrontId);
+                return MenuSelections[userInput].Invoke();
             }
             else
             {
+
                 return MenuSelections[userInput].Invoke();
             }
         }

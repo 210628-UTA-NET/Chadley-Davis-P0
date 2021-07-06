@@ -1,13 +1,12 @@
-﻿namespace App.Menus
+﻿namespace App.Menus.Addresses
 {
-    internal class OrderMenu : IMenu
+    internal class AddressMenu : IMenu
     {
-        public string Header { get { return Constants.Order; } }
 
+        public string Header { get { return Constants.Address; } }
 
-        public OrderMenu()
+        public AddressMenu()
         {
-
         }
         public void Menu()
         {

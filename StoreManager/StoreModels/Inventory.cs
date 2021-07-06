@@ -36,7 +36,7 @@ namespace StoreModels
         /// <returns>True if StoreFronts Have Same Name and Category</returns>
         public static bool operator ==(Inventory x, Inventory y)
         {
-            return x.Id == y.Id;
+            return x?.Id == y?.Id;
         }
 
         public static bool operator !=(Inventory x, Inventory y)

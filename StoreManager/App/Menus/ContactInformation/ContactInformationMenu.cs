@@ -1,21 +1,20 @@
-﻿using System;
+﻿using App.Menus.Addresses;
+using System;
 using System.Collections.Generic;
 
-namespace App.Menus
+namespace App.Menus.ContactInformation
 {
-    internal class CustomerMenu : IMenu
+    internal class ContactInformationMenu : IMenu
     {
-        public string Header { get { return Constants.Customer; } }
+        public string Header { get { return Constants.Main; } }
 
         Dictionary<MenuType, Func<IMenu>> menus = new Dictionary<MenuType, Func<IMenu>>() {
             { MenuType.MainMenu, () => new MainMenu() },
-            { MenuType.ContactInformationMenu, () => new ContactInformationMenu() },
-            { MenuType.StoreFrontMenu, () => new OrderMenu() }
+            { MenuType.AddressMenu, () => new AddressMenu() },
         };
 
 
-
-        public CustomerMenu()
+        public ContactInformationMenu()
         {
 
         }

@@ -1,4 +1,11 @@
-﻿using StoreDL;
+﻿using App.Menus.Addresses;
+using App.Menus.ContactInformation;
+using App.Menus.Customers;
+using App.Menus.Details;
+using App.Menus.Orders;
+using App.Menus.Products;
+using App.Menus.StoreFronts;
+using StoreDL;
 using StoreModels;
 using System;
 using System.Collections.Generic;
@@ -22,22 +29,20 @@ namespace App.Menus
             { MenuType.CustomerMenu, (currentMenu) => new CustomerMenu() },
             { MenuType.AddressMenu, (currentMenu) => new AddressMenu() },
             { MenuType.ContactInformationMenu, (currentMenu) => new ContactInformationMenu() },
-            { MenuType.StoreFrontMenu, (currentMenu) => new StoreFrontMenu(IFactory.DataBaseModel, StoreFront) },
+            { MenuType.StoreFrontMenu, (currentMenu) => new StoreFrontMenu(IFactory.DataBaseModel, ((StoreFrontsMenu)currentMenu).StoreFront) },
             { MenuType.StoreFrontsMenu, (currentMenu) => new StoreFrontsMenu(IFactory.DataBaseModel) },
             { MenuType.OrderMenu, (currentMenu) => new OrderMenu() },
             { MenuType.ProductMenu, (currentMenu) => new ProductMenu() },
             { MenuType.DetailMenu, (currentMenu) => new DetailMenu() },
-            { MenuType.AddStoreFrontMenu, (currentMenu) => {
+            { MenuType.AddStoreFrontMenu, (currentMenu) =>
+            {
                 AddStoreFrontMenu menu = new AddStoreFrontMenu(IFactory.DataBaseModel);
                 menu.Menu();
                 StoreFront = menu.StoreFront;
-                StoreFrontMenu storeFrontMenu = new StoreFrontMenu(IFactory.DataBaseModel, StoreFront);
                 return menus[MenuType.StoreFrontMenu].Invoke(currentMenu);
             } },
             { MenuType.SearchStoreFrontMenu, (currentMenu) => {
-                SearchStoreFrontMenu menu = new SearchStoreFrontMenu(IFactory.DataBaseModel);
-                menu.Menu();
-                menu.MakeChoice();
+                SearchStoreFrontMenu searchStore = new SearchStoreFrontMenu();
                 return null;
             } },
             { MenuType.ExitMenu, (currentMenu) => {
@@ -59,9 +64,7 @@ namespace App.Menus
         }
         public IMenu GetMenu(MenuType menuType)
         {
-            IMenu current = Pop();
-            IMenu previous = Peek();
-            Push(current);
+            IMenu current = Peek();
             IMenu menu = menus[menuType].Invoke(current);
             if(menu != null)
                 Push(menu);

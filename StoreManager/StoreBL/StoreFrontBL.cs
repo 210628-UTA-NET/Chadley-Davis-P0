@@ -29,10 +29,10 @@ namespace StoreBL
             throw new NotImplementedException();
         }
 
-        public override List<StoreFront> GetAll(StoreFront searchItem)
+        public async override Task<List<StoreFront>> GetAll(StoreFront searchItem)
         {
-            var result = Repo.GetAll(new StoreFront() { Name = searchItem.Name });
-            Repo._DBContext.StoreFronts.AddRange(result.Result);
+            var result = await Repo.GetAll(searchItem);
+            Repo._DBContext.StoreFronts.AddRange(result);
             return Repo._DBContext.StoreFronts;
         }
 

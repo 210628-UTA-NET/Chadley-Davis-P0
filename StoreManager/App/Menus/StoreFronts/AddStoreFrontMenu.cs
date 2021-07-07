@@ -31,7 +31,7 @@ namespace App.Menus.StoreFronts
             {
                 Id = Guid.NewGuid(),
                 Name = "",
-                LastUpdate = DateTime.Now
+                LastUpdate = DateTime.UtcNow
             };
             storeFrontBL = new StoreFrontBL(dBContext);
             storeFrontBL.Add(StoreFront);

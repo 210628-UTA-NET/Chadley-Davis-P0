@@ -7,7 +7,7 @@ namespace StoreModels
     {
         #region Properties
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public Guid ProductId
         {
@@ -17,10 +17,14 @@ namespace StoreModels
                     ? Product.Id
                     : Guid.Empty;
             }
+            set
+            {
+                Product.Id = value;
+            }
         }
         [JsonIgnore]
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
+        public Product Product { get; set; } = new Product();
+        public int Quantity { get; set; } = 0;
         public Guid OrderId
         {
             get
@@ -29,10 +33,14 @@ namespace StoreModels
                     ? Order.Id
                     : Guid.Empty;
             }
+            set
+            {
+                Order.Id = value;
+            }
         }
         [JsonIgnore]
-        public Order Order { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public Order Order { get; set; } = new Order();
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #endregion
         #region Constructors
@@ -41,11 +49,12 @@ namespace StoreModels
         {
 
         }
-        public Detail(Guid id, Product product, int quantity)
+        public Detail(Guid id, Product product, int quantity, Order order)
         {
             Id = id;
             Product = product;
             Quantity = quantity;
+            Order = order;
         }
 
         #endregion

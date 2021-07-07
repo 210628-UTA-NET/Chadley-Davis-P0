@@ -9,10 +9,10 @@ namespace StoreModels
     {
         #region Properties
 
-        public Guid Id { get; set; }
-        public string FirstName { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string FirstName { get; set; } = "";
 
-        public string LastName { get; set; }
+        public string LastName { get; set; } = "";
         public Guid ContactInformationId
         {
             get
@@ -23,12 +23,12 @@ namespace StoreModels
             }
             set
             {
-
+                ContactInformation.Id = value;
             }
         }
         [JsonIgnore]
-        public ContactInformation ContactInformation { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public ContactInformation ContactInformation { get; set; } = new ContactInformation();
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #region Order Properties
         public List<Guid> PendingOrderIds
@@ -39,9 +39,17 @@ namespace StoreModels
                     ? PendingOrders.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+                foreach(Guid id in value)
+                {
+                    PendingOrders.Enqueue(new Order() { Id = id });
+                }
+            }
+                
         }
         [JsonIgnore]
-        public Queue<Order> PendingOrders { get; set; }
+        public Queue<Order> PendingOrders { get; set; } = new Queue<Order>();
 
         public List<Guid> CompletedOrderIds
         {
@@ -51,9 +59,18 @@ namespace StoreModels
                     ? CompletedOrders.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+                foreach (Guid id in value)
+                {
+                    CompletedOrders.Add(new Order() { Id = id });
+                }
+            }
         }
         [JsonIgnore]
-        public List<Order> CompletedOrders { get; set; }
+        public List<Order> CompletedOrders { get; set; } = new List<Order>();
+
+        [JsonIgnore]
         public List<Guid> OrderIds
         {
             get

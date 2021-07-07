@@ -10,13 +10,25 @@ namespace StoreModels
     public class Inventory
     {
 
-        public Guid Id { get; set; }
-        public Guid ProductId { get { return Product != null ? Product.Id : Guid.Empty; } }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid ProductId 
+        { 
+            get
+            { 
+                return Product != null 
+                    ? Product.Id 
+                    : Guid.Empty; 
+            }
+            set
+            {
+                Product.Id = value;
+            }
+        }
 
         [JsonIgnore]
-        public Product Product { get; set; }
+        public Product Product { get; set; } = new Product();
 
-        public uint Count { get; set; }
+        public uint Count { get; set; } = 0;
 
 
 

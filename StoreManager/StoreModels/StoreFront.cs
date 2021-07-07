@@ -8,8 +8,8 @@ namespace StoreModels
     public class StoreFront
     {
         #region Properties
-        public Guid Id { get; set; }
-        public string Name { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Name { get; set; } = "";
 
         public Guid ContactInformationId
         {
@@ -21,12 +21,12 @@ namespace StoreModels
             }
             set
             {
-
+                ContactInformation.Id = value;
             }
         }
 
         [JsonIgnore]
-        public ContactInformation ContactInformation { get; set; }
+        public ContactInformation ContactInformation { get; set; } = new ContactInformation();
 
 
         public List<Guid> ProductIds
@@ -39,33 +39,39 @@ namespace StoreModels
             }
             set
             {
-
+                foreach(Guid id in value)
+                {
+                    Products.Add(new Product() { Id = id });
+                }
             }
         }
 
 
         [JsonIgnore]
-        public List<Product> Products { get; set; }
+        public List<Product> Products { get; set; } = new List<Product>();
 
         public List<Guid> InventoryIds
         {
             get
             {
-                return Inventory != null
-                    ? Inventory.Select(inventory => inventory.Id).ToList()
+                return Inventories != null
+                    ? Inventories.Select(inventory => inventory.Id).ToList()
                     : new List<Guid>();
             }
             set 
             {
-            
+                foreach(Guid id in value)
+                {
+                    Inventories.Add(new Inventory() { Id = id });
+                }
             }
 
         }
 
 
         [JsonIgnore]
-        public List<Inventory> Inventory { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public List<Inventory> Inventories { get; set; } = new List<Inventory>();
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #region Order Properties
 
@@ -101,12 +107,15 @@ namespace StoreModels
             }
             set
             {
-
+                foreach (Guid id in value)
+                {
+                    PendingOrders.Enqueue(new Order() { Id = id });
+                }
             }
         }
 
         [JsonIgnore]
-        public Queue<Order> PendingOrders { get; set; }
+        public Queue<Order> PendingOrders { get; set; } = new Queue<Order>();
 
 
         public List<Guid> CompletedOrderIds
@@ -119,12 +128,15 @@ namespace StoreModels
             }
             set
             {
-
+                foreach (Guid id in value)
+                {
+                    CompletedOrders.Add(new Order() { Id = id });
+                }
             }
         }
 
         [JsonIgnore]
-        public List<Order> CompletedOrders { get; set; }
+        public List<Order> CompletedOrders { get; set; } = new List<Order>();
 
         #endregion
         public List<Guid> CustomerIds
@@ -137,38 +149,23 @@ namespace StoreModels
             }
             set
             {
-
+                foreach(Guid id in value)
+                {
+                    Customers.Add(new Customer() { Id = id });
+                }
             }
         }
 
 
         [JsonIgnore]
-        public List<Customer> Customers { get; set; }
+        public List<Customer> Customers { get; set; } = new List<Customer>();
         #endregion
 
         #region Constructors
         public StoreFront()
         {
-            Id = Guid.Empty;
-            Name = "";
-            ContactInformation = new ContactInformation();
-            Inventory = new List<Inventory>();
-            PendingOrders = new Queue<Order>();
-            CompletedOrders = new List<Order>();
-            Customers = new List<Customer>();
-            Products = new List<Product>();
-        }
-        public StoreFront(Guid id, string name)
-        {
-            Id = id;
-            Name = name;
-            ContactInformation = new ContactInformation();
-            Inventory = new List<Inventory>();
-            PendingOrders = new Queue<Order>();
-            CompletedOrders = new List<Order>();
-            Customers = new List<Customer>();
-        }
 
+        }
         #endregion
 
         #region Methods
@@ -180,24 +177,24 @@ namespace StoreModels
         #region Inventory Methods
         public void AddInventory(Product product, uint amount)
         {
-            if (Inventory.Exists(p => p.Product == product))
+            if (Inventories.Exists(p => p.Product == product))
             {
-                Inventory.First(p => p.Product == product).Count += amount;
+                Inventories.First(p => p.Product == product).Count += amount;
             }
             else
             {
-                Inventory.Add(new Inventory() { Product = product, Count = amount });
+                Inventories.Add(new Inventory() { Product = product, Count = amount });
             }
         }
         public void RemoveInventory(Product product, uint amount)
         {
-            if (Inventory.Exists(p => p.Product == product))
+            if (Inventories.Exists(p => p.Product == product))
             {
-                if (Inventory.First(p => p.Product == product).Count >= amount)
-                    Inventory.First(p => p.Product == product).Count -= amount;
+                if (Inventories.First(p => p.Product == product).Count >= amount)
+                    Inventories.First(p => p.Product == product).Count -= amount;
                 else
                 {
-                    throw new Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventory.First(p => p.Product == product).Count}.");
+                    throw new Exception($"Not enough {product.Name}s in inventory. On-Hand: {Inventories.First(p => p.Product == product).Count}.");
                 }
             }
             else

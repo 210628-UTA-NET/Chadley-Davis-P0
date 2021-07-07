@@ -10,7 +10,7 @@ namespace StoreModels
     {
         #region Properties
 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public List<Guid> DetailIds
         {
@@ -20,22 +20,65 @@ namespace StoreModels
                     ? Details.Select(order => order.Id).ToList()
                     : new List<Guid>();
             }
+            set
+            {
+                foreach(Guid id in value)
+                {
+                    Details.Add(new Detail() { Id = id });
+                }
+            }
         }
         [JsonIgnore]
-        public List<Detail> Details { get; set; }
-        public Guid LocationId { get { return Location != null ? Location.Id : Guid.Empty; } }
+        public List<Detail> Details { get; set; } = new List<Detail>();
+        public Guid LocationId 
+        { 
+            get 
+            { 
+                return Location != null 
+                    ? Location.Id 
+                    : Guid.Empty; 
+            }
+            set
+            {
+                Location.Id = value;
+            }
+        }
 
         [JsonIgnore]
-        public Address Location { get; set; }
-        public DateTime OrderDate { get; set; }
-        public Guid CustomertId { get { return Customer != null ? Customer.Id : Guid.Empty; } }
+        public Address Location { get; set; } = new Address();
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        public Guid CustomertId 
+        { 
+            get 
+            { 
+                return Customer != null 
+                    ? Customer.Id 
+                    : Guid.Empty;
+            }
+            set
+            {
+                Customer.Id = value;
+            }
+        }
         [JsonIgnore]
-        public Customer Customer { get; set; }
+        public Customer Customer { get; set; } = new Customer();
 
-        public Guid StoreFrontId { get { return StoreFront != null ? StoreFront.Id : Guid.Empty; } }
+        public Guid StoreFrontId 
+        { 
+            get 
+            { 
+                return StoreFront != null 
+                    ? StoreFront.Id 
+                    : Guid.Empty;
+            }
+            set
+            {
+                StoreFront.Id = value;
+            }
+        }
         [JsonIgnore]
-        public StoreFront StoreFront { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public StoreFront StoreFront { get; set; } = new StoreFront();
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 
         #region Constructors
@@ -43,13 +86,6 @@ namespace StoreModels
         public Order()
         {
 
-        }
-        public Order(Guid id, Address orderLocation)
-        {
-            Id = id;
-            Location = orderLocation;
-            OrderDate = DateTime.UtcNow;
-            Details = new List<Detail>();
         }
 
         #endregion

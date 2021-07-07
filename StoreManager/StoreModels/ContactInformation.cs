@@ -6,9 +6,9 @@ namespace StoreModels
     public class ContactInformation
     {
         #region Properties
-        public Guid Id { get; set; }
-        public string PhoneNumber { get; set; }
-        public string EmailAddress { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string PhoneNumber { get; set; } = "";
+        public string EmailAddress { get; set; } = "";
         public Guid AddressId
         {
             get
@@ -24,17 +24,18 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public Address Address { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public Address Address { get; set; } = new Address();
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 
         #region Constructors
         public ContactInformation()
         {
-            Address = new Address();
+
         }
-        public ContactInformation(string phoneNumber, string emailAddress, Address address)
+        public ContactInformation(Guid id, string phoneNumber, string emailAddress, Address address)
         {
+            Id = id;
             PhoneNumber = phoneNumber;
             EmailAddress = emailAddress;
             Address = address;

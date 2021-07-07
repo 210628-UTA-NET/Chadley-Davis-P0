@@ -4,6 +4,7 @@ namespace StoreModels
 {
     public enum Category
     {
+        None = 0,
         Grocery = 1,
         Apparel = 2,
         Sports = 3,

@@ -5,14 +5,14 @@ namespace StoreModels
     public class Address
     {
         #region Properties
-        public Guid Id { get; set; }
-        public string AddressLine1 { get; set; }
-        public string AddressLine2 { get; set; }
-        public string City { get; set; }
-        public string Province { get; set; }
-        public string Country { get; set; }
-        public string ZipCode { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string AddressLine1 { get; set; } = "";
+        public string AddressLine2 { get; set; } = "";
+        public string City { get; set; } = "";
+        public string Province { get; set; } = "";
+        public string Country { get; set; } = "";
+        public string ZipCode { get; set; } = "";
+        public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 
         #region Constructors
@@ -20,14 +20,16 @@ namespace StoreModels
         {
 
         }
-        public Address(string addressLine1, string addressLine2, string city, string province, string country, string zipcode)
+        public Address(Guid id, string addressLine1, string addressLine2, string city, string province, string country, string zipcode)
         {
+            Id = id;
             AddressLine1 = addressLine1;
             AddressLine2 = addressLine2;
             City = city;
             Province = province;
             Country = country;
             ZipCode = zipcode;
+            LastUpdate = DateTime.UtcNow;
         }
         #endregion
 

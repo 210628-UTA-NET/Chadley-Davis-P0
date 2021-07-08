@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -11,6 +12,7 @@ namespace StoreModels
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = "";
 
+        [NotMapped]
         public Guid ContactInformationId
         {
             get
@@ -26,8 +28,10 @@ namespace StoreModels
         }
 
         [JsonIgnore]
-        public ContactInformation ContactInformation { get; set; } = new ContactInformation();
+        [NotMapped]
+        public virtual ContactInformation ContactInformation { get; set; } = new ContactInformation();
 
+        [NotMapped]
 
         public List<Guid> ProductIds
         {
@@ -48,8 +52,10 @@ namespace StoreModels
 
 
         [JsonIgnore]
-        public List<Product> Products { get; set; } = new List<Product>();
+        [NotMapped]
+        public virtual List<Product> Products { get; set; } = new List<Product>();
 
+        [NotMapped]
         public List<Guid> InventoryIds
         {
             get
@@ -70,12 +76,14 @@ namespace StoreModels
 
 
         [JsonIgnore]
-        public List<Inventory> Inventories { get; set; } = new List<Inventory>();
+        [NotMapped]
+        public virtual List<Inventory> Inventories { get; set; } = new List<Inventory>();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #region Order Properties
 
         [JsonIgnore]
+        [NotMapped]
         public List<Guid> OrderIds
         {
             get
@@ -86,6 +94,7 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
+        [NotMapped]
         public List<Order> Orders
         {
             get
@@ -97,6 +106,7 @@ namespace StoreModels
             }
         }
 
+        [NotMapped]
         public List<Guid> PendingOrderIds
         {
             get
@@ -109,15 +119,16 @@ namespace StoreModels
             {
                 foreach (Guid id in value)
                 {
-                    PendingOrders.Enqueue(new Order() { Id = id });
+                    PendingOrders.Add(new Order() { Id = id });
                 }
             }
         }
-
         [JsonIgnore]
-        public Queue<Order> PendingOrders { get; set; } = new Queue<Order>();
+        [NotMapped]
+        public virtual List<Order> PendingOrders { get; set; }
+        
 
-
+        [NotMapped]
         public List<Guid> CompletedOrderIds
         {
             get
@@ -136,9 +147,11 @@ namespace StoreModels
         }
 
         [JsonIgnore]
-        public List<Order> CompletedOrders { get; set; } = new List<Order>();
+        [NotMapped]
+        public virtual List<Order> CompletedOrders { get; set; } = new List<Order>();
 
         #endregion
+        [NotMapped]
         public List<Guid> CustomerIds
         {
             get
@@ -158,7 +171,8 @@ namespace StoreModels
 
 
         [JsonIgnore]
-        public List<Customer> Customers { get; set; } = new List<Customer>();
+        [NotMapped]
+        public virtual List<Customer> Customers { get; set; } = new List<Customer>();
         #endregion
 
         #region Constructors
@@ -214,13 +228,14 @@ namespace StoreModels
 
         public void AddOrder(Order order)
         {
-            PendingOrders.Enqueue(order);
+            PendingOrders.Add(order);
         }
         public void ProcessNextOrder()
         {
             //Perform Order processing tasks here
-
-            CompletedOrders.Add(PendingOrders.Dequeue());
+            Order order = PendingOrders[0];
+            PendingOrders.RemoveAt(0);
+            CompletedOrders.Add(order);
         }
 
         #endregion

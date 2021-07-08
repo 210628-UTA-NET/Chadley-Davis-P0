@@ -5,11 +5,13 @@ using App.Menus.Details;
 using App.Menus.Orders;
 using App.Menus.Products;
 using App.Menus.StoreFronts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Models.Entities;
 using StoreBL;
-using StoreDL;
-using StoreModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace App.Menus
     {
         static StoreFront StoreFront { get; set; }
         static StoreFrontBL StoreFrontBL { get; set; }
+
         #region MenuConstructors
         /// <summary>
         /// Return null to Return to Previous Menu (Pop off Stack)
@@ -30,20 +33,13 @@ namespace App.Menus
             { MenuType.CustomerMenu, (currentMenu) => new CustomerMenu() },
             { MenuType.AddressMenu, (currentMenu) => new AddressMenu() },
             { MenuType.ContactInformationMenu, (currentMenu) => new ContactInformationMenu() },
-            { MenuType.StoreFrontMenu, (currentMenu) => new StoreFrontMenu(IFactory.DataBaseModel, ((StoreFrontsMenu)currentMenu).StoreFront) },
-            { MenuType.StoreFrontsMenu, (currentMenu) => new StoreFrontsMenu(IFactory.DataBaseModel) },
+            { MenuType.StoreFrontMenu, (currentMenu) => new StoreFrontMenu(StoreFrontsMenu.StoreFront) },
+            { MenuType.StoreFrontsMenu, (currentMenu) => new StoreFrontsMenu() },
             { MenuType.OrderMenu, (currentMenu) => new OrderMenu() },
             { MenuType.ProductMenu, (currentMenu) => new ProductMenu() },
             { MenuType.DetailMenu, (currentMenu) => new DetailMenu() },
-            { MenuType.EditStoreFrontMenu, (currentMenu) => new EditStoreFrontMenu(IFactory.DataBaseModel, ((StoreFrontMenu)currentMenu).StoreFront) },
-            { MenuType.AddStoreFrontMenu, (currentMenu) =>
-            {
-                AddStoreFrontMenu menu = new AddStoreFrontMenu(IFactory.DataBaseModel);
-                menu.Menu();
-                StoreFront = menu.StoreFront;
-                ((StoreFrontsMenu)currentMenu).StoreFront = StoreFront;
-                return menus[MenuType.StoreFrontMenu].Invoke(currentMenu);
-            } },
+            { MenuType.EditStoreFrontMenu, (currentMenu) => new EditStoreFrontMenu(((StoreFrontMenu)currentMenu).StoreFront) },
+            { MenuType.AddStoreFrontMenu, (currentMenu) => new StoreFrontMenu(StoreFrontsMenu.StoreFront) },
             { MenuType.SearchStoreFrontMenu, (currentMenu) => {
                 SearchStoreFrontMenu searchStore = new SearchStoreFrontMenu();
                 return null;
@@ -62,8 +58,9 @@ namespace App.Menus
 
         public MenuFactory()
         {
-            IFactory.DataBaseModel = new DBModel();
+            
             IFactory.MenuStack = new Stack<IMenu>();
+
         }
         public IMenu GetMenu(MenuType menuType)
         {

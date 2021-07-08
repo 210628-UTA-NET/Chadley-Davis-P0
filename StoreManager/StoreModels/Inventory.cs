@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -11,6 +12,8 @@ namespace StoreModels
     {
 
         public Guid Id { get; set; } = Guid.NewGuid();
+
+        [NotMapped]
         public Guid ProductId 
         { 
             get
@@ -26,7 +29,8 @@ namespace StoreModels
         }
 
         [JsonIgnore]
-        public Product Product { get; set; } = new Product();
+        [NotMapped]
+        public virtual Product Product { get; set; } = new Product();
 
         public uint Count { get; set; } = 0;
 

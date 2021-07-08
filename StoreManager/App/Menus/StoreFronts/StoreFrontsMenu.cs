@@ -1,10 +1,12 @@
-﻿using StoreBL;
-using StoreDL;
-using StoreModels;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.Entities;
+using StoreBL;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 
 namespace App.Menus.StoreFronts
 {
@@ -18,32 +20,49 @@ namespace App.Menus.StoreFronts
             { "A", () => {
                 SearchStoreFrontMenu menu = new SearchStoreFrontMenu();
                 menu.Menu();
+
                 menu.MakeChoice();
                 SearchTerm = menu.SearchTerm;                
                 return MenuType.None;
             } },
-            { "B", () => MenuType.StoreFrontMenu },
-            { "C", () => MenuType.AddStoreFrontMenu },
+            { "B", () => 
+            {
+                Console.WriteLine("Please enter the Store's Unique ID.");
+                Guid id;
+                while(Guid.TryParse(Console.ReadLine(), out id))
+                {
+                    Console.WriteLine("Please enter a valid unique identifier.");
+                }
+
+                StoreFront = StoreFronts.FirstOrDefault(sf => sf.Id == id);
+                return MenuType.StoreFrontMenu; 
+            } },
+            { "C", () => {
+                StoreFront = new StoreFront();
+                var storeFront = storeFrontBL.Add(StoreFront);
+                while(!storeFront.IsCompleted);
+                StoreFront = storeFront.Result;
+                return MenuType.StoreFrontMenu;
+            } },
             { "0", () => MenuType.ExitMenu }
         };
 
         static List<StoreFront> StoreFronts { get; set; }
-        public StoreFront StoreFront { get; set; }
-        private StoreFrontBL storeFrontBL { get; set; }
-        private static DBModel dbModel { get; set; }
-        public StoreFrontsMenu(DBModel dB)
+        internal static StoreFront StoreFront { get; set; }
+        private static StoreFrontBL storeFrontBL { get; set; }
+
+        public StoreFrontsMenu()
         {
-
-            storeFrontBL = new StoreFrontBL(dB);
-            var result = storeFrontBL.GetAll(new StoreFront() { Id = StoreFrontId, Name = SearchTerm != null ? SearchTerm : "" });
-            while (!result.IsCompleted);
-            
-            StoreFronts = result.Result;
-
-
+            storeFrontBL = new StoreFrontBL();
+            var storeFrontTask = storeFrontBL.GetAll();
+            while(!storeFrontTask.IsCompleted);
+            StoreFronts = storeFrontTask.Result;
         }
         public void Menu()
         {
+            var storeFrontTask = storeFrontBL.GetAll();
+            while (!storeFrontTask.IsCompleted) ;
+            StoreFronts = storeFrontTask.Result;
 
             Console.WriteLine();
             Console.WriteLine("Please select an option.");
@@ -53,7 +72,9 @@ namespace App.Menus.StoreFronts
             int count = 1;
             Console.WriteLine("Store List!");
             StoreFronts.ForEach(storeFront => {
-                Console.WriteLine($"[{count++}] Select Store {storeFront.Id} - {storeFront.Name}");
+                Console.WriteLine($"Id: {storeFront.Id}");
+                Console.WriteLine($"Name: {storeFront.Name}");
+                Console.WriteLine();
             });
             Console.WriteLine("[0] Exit");
         }
@@ -62,28 +83,10 @@ namespace App.Menus.StoreFronts
         {
             string userInput = Console.ReadLine();
             //if non-zero integer
-            if (Regex.IsMatch(userInput, @"(?!0)^\d+$"))
-            {
-                int.TryParse(userInput, out int index);
-                StoreFront = StoreFronts[index - 1];
-                return MenuType.StoreFrontMenu;
-            }
-            else if (userInput == "B")
-            {
-                GetStoreFrontMenu getSFMenu = new GetStoreFrontMenu();
-                getSFMenu.Menu();
-                getSFMenu.MakeChoice();
-                if(getSFMenu.StoreFrontId != Guid.Empty)
-                    StoreFront = StoreFronts.FirstOrDefault(sf => sf.Id == getSFMenu.StoreFrontId);
-                return MenuSelections[userInput].Invoke();
-            }
-            else
-            {
-
-                if (!MenuSelections.ContainsKey(userInput))
-                    return MenuType.None;
-                return MenuSelections[userInput].Invoke();
-            }
+            if (!MenuSelections.ContainsKey(userInput))
+                return MenuType.None;
+            return MenuSelections[userInput].Invoke();
+            
         }
     }
 }

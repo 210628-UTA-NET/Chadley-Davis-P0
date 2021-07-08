@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 using StoreModels;
@@ -12,6 +13,7 @@ namespace StoreModels
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [NotMapped]
         public List<Guid> DetailIds
         {
             get
@@ -29,7 +31,9 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public List<Detail> Details { get; set; } = new List<Detail>();
+        [NotMapped]
+        public virtual List<Detail> Details { get; set; } = new List<Detail>();
+        [NotMapped]
         public Guid LocationId 
         { 
             get 
@@ -45,8 +49,10 @@ namespace StoreModels
         }
 
         [JsonIgnore]
-        public Address Location { get; set; } = new Address();
+        [NotMapped]
+        public virtual Address Location { get; set; } = new Address();
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+        [NotMapped]
         public Guid CustomertId 
         { 
             get 
@@ -61,8 +67,10 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public Customer Customer { get; set; } = new Customer();
+        [NotMapped]
+        public virtual Customer Customer { get; set; } = new Customer();
 
+        [NotMapped]
         public Guid StoreFrontId 
         { 
             get 
@@ -77,7 +85,8 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public StoreFront StoreFront { get; set; } = new StoreFront();
+        [NotMapped]
+        public virtual StoreFront StoreFront { get; set; } = new StoreFront();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 

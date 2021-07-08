@@ -1,6 +1,5 @@
-﻿using StoreBL;
-using StoreDL;
-using StoreModels;
+﻿using Models.Entities;
+using StoreBL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,10 +36,10 @@ namespace App.Menus.StoreFronts
         public Guid StoreFrontId { get; set; }
         StoreFrontBL storeFrontBL { get; }
         public StoreFront StoreFront { get; set; }
-        public EditStoreFrontMenu(DBModel dB, StoreFront storeFront)
+        public EditStoreFrontMenu(StoreFront storeFront)
         {
-            storeFrontBL = new StoreFrontBL(dB);
-            StoreFront = storeFront;
+            //storeFrontBL = new StoreFrontBL();
+            //StoreFront = storeFront;
         }
         public void Menu()
         {

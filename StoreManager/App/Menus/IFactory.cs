@@ -10,7 +10,7 @@ namespace App.Menus
     public interface IFactory
     {
         protected static Stack<IMenu> MenuStack { get; set; }
-        protected static DBModel DataBaseModel { get; set; }
+
         IMenu GetMenu(MenuType menu);
 
 

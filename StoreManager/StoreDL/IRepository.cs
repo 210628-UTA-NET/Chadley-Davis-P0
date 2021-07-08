@@ -1,7 +1,8 @@
+using StoreDL.Database;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using StoreModels;
+
 
 namespace StoreDL
 {
@@ -10,7 +11,7 @@ namespace StoreDL
     /// </summary>
     public interface IRepository<T>
     {
-        DBModel _DBContext { get; }
+
         /// <summary>
         /// Gets a list of T stored in our database
         /// </summary>
@@ -30,6 +31,6 @@ namespace StoreDL
         /// <param name="p_rest">This is the T object that will be added to the database</param>
         /// <returns>Will return the T object we just added</returns>
         Task<T> Add(T item);
-        Task<T> Update(T item);
+        Task Update(T item);
     }
 }

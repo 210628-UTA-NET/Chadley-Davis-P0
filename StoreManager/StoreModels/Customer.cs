@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -13,6 +14,7 @@ namespace StoreModels
         public string FirstName { get; set; } = "";
 
         public string LastName { get; set; } = "";
+        [NotMapped]
         public Guid ContactInformationId
         {
             get
@@ -27,10 +29,13 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public ContactInformation ContactInformation { get; set; } = new ContactInformation();
+        [NotMapped]
+        public virtual ContactInformation ContactInformation { get; set; } = new ContactInformation();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #region Order Properties
+
+        [NotMapped]
         public List<Guid> PendingOrderIds
         {
             get
@@ -41,16 +46,19 @@ namespace StoreModels
             }
             set
             {
-                foreach(Guid id in value)
+                foreach (Guid id in value)
                 {
-                    PendingOrders.Enqueue(new Order() { Id = id });
+                    PendingOrders.Add(new Order() { Id = id });
                 }
             }
-                
         }
-        [JsonIgnore]
-        public Queue<Order> PendingOrders { get; set; } = new Queue<Order>();
 
+        
+        [JsonIgnore]
+        [NotMapped]
+        public virtual List<Order> PendingOrders { get; set; }
+
+        [NotMapped]
         public List<Guid> CompletedOrderIds
         {
             get
@@ -68,9 +76,11 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public List<Order> CompletedOrders { get; set; } = new List<Order>();
+        [NotMapped]
+        public virtual List<Order> CompletedOrders { get; set; } = new List<Order>();
 
         [JsonIgnore]
+        [NotMapped]
         public List<Guid> OrderIds
         {
             get
@@ -81,7 +91,8 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public List<Order> Orders
+        [NotMapped]
+        public virtual List<Order> Orders
         {
             get
             {
@@ -98,16 +109,14 @@ namespace StoreModels
         #region Constructors
         public Customer()
         {
-            PendingOrders = new Queue<Order>();
-            CompletedOrders = new List<Order>();
+
         }
         public Customer(Guid id, string firstName, string lastName)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            PendingOrders = new Queue<Order>();
-            CompletedOrders = new List<Order>();
+
         }
         #endregion
 
@@ -121,7 +130,7 @@ namespace StoreModels
         #region Order Methods
         public void AddOrder(Order order)
         {
-            Orders.Add(order);
+            PendingOrders.Add(order);
         }
 
         #endregion

@@ -1,5 +1,6 @@
-﻿using StoreDL;
-using StoreModels;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.Entities;
+using StoreDL.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,44 +9,41 @@ using System.Threading.Tasks;
 
 namespace StoreBL
 {
-    public class StoreFrontBL : BL<StoreFront>
+    public class StoreFrontBL : IBL<StoreFront>
     {
-        public StoreFrontBL(DBModel db) : base(db)
+        StoreManagerDBContext DBContext { get; set; }
+        public StoreFrontBL()
         {
-            Repo = new StoreFrontRepository(db);
+            DBContext = new StoreManagerDBContext();
+        }
+        public async Task<StoreFront> Add(StoreFront item)
+        {
+            await DBContext.StoreFronts.AddAsync(item);
+            await DBContext.SaveChangesAsync();
+            return item;
         }
 
-        IRepository<StoreFront> Repo { get; set; }
-
-        public override async Task<StoreFront> Add(StoreFront item)
+        public async Task<StoreFront> Get(Guid id)
         {
-            var result = await Repo.Add(item);
-            Repo._DBContext.StoreFronts.Add(result);
-            return result;
+            return await DBContext.StoreFronts.FirstOrDefaultAsync(sf => sf.Id == id);
         }
 
-        public override async Task<StoreFront> Get(StoreFront item)
+        public async Task<List<StoreFront>> GetAll()
         {
-            throw new NotImplementedException();
+            return await DBContext.StoreFronts.ToListAsync();
         }
 
-        public override async Task<List<StoreFront>> GetAll(StoreFront searchItem)
+        public async Task Remove(StoreFront item)
         {
-            var result = await Repo.GetAll(searchItem);
-            Repo._DBContext.StoreFronts.AddRange(result);
-            return Repo._DBContext.StoreFronts;
+            DBContext.StoreFronts.Remove(item);
+            await DBContext.SaveChangesAsync();
         }
 
-
-        public override async Task Remove(StoreFront item)
+        public async Task<StoreFront> Update(StoreFront item)
         {
-            throw new NotImplementedException();
-        }
-
-        public override async Task<StoreFront> Update(StoreFront item)
-        {
-            StoreFront result = await Repo.Update(item);
-            return result;
+            DBContext.StoreFronts.Update(item);
+            await DBContext.SaveChangesAsync();
+            return item;
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using StoreModels;
 using Xunit;
 
 namespace StoreManagerTest
@@ -14,9 +13,8 @@ namespace StoreManagerTest
         public void IsStroreFrontValidTest()
         {
             //Arrange
-            StoreFront storeFront = new StoreFront() { 
-                Name = "McDonald's"
-            };
+            
+
             //Act
 
             //Assert

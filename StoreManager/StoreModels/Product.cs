@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using StoreModels;
 
 namespace StoreModels
@@ -13,6 +14,7 @@ namespace StoreModels
         public string Description { get; set; } = "";
         public decimal Price { get; set; } = Decimal.Zero;
         public Category Category { get; set; } = Category.None;
+        [NotMapped]
         public Guid StoreFrontId 
         { 
             get 
@@ -26,7 +28,8 @@ namespace StoreModels
                 StoreFront.Id = value;
             }
         }
-        public StoreFront StoreFront { get; set; } = new StoreFront();
+        [NotMapped]
+        public virtual StoreFront StoreFront { get; set; } = new StoreFront();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 

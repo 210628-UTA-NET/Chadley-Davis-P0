@@ -6,7 +6,7 @@
 # .NET Core build folders
 **/bin
 **/obj
-
+**/appsettings.json
 
 
 # Common node modules locations

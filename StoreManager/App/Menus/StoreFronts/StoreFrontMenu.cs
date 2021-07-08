@@ -1,5 +1,5 @@
-﻿using StoreDL;
-using StoreModels;
+﻿
+using Models.Entities;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ namespace App.Menus.StoreFronts
 
 
 
-        public StoreFrontMenu(DBModel dB, StoreFront storeFront)
+        public StoreFrontMenu(StoreFront storeFront)
         {
 
             StoreFront = storeFront;
@@ -32,10 +32,10 @@ namespace App.Menus.StoreFronts
 
                 Console.WriteLine($"Store Id: {StoreFront.Id}");
                 Console.WriteLine($"Store Name: {StoreFront.Name}");
-                if (StoreFront.ContactInformation != null)
+                if (StoreFront.Contact != null)
                 {
                     Console.WriteLine($"Contact Information: ");
-                    Console.WriteLine(StoreFront.ContactInformation.ToString());
+                    Console.WriteLine(StoreFront.Contact.ToString());
 
                 }
 

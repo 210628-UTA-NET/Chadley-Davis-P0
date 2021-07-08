@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace StoreModels
@@ -9,6 +10,7 @@ namespace StoreModels
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [NotMapped]
         public Guid ProductId
         {
             get
@@ -23,8 +25,11 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public Product Product { get; set; } = new Product();
+        [NotMapped]
+        public virtual Product Product { get; set; } = new Product();
         public int Quantity { get; set; } = 0;
+
+        [NotMapped]
         public Guid OrderId
         {
             get
@@ -39,7 +44,8 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public Order Order { get; set; } = new Order();
+        [NotMapped]
+        public virtual Order Order { get; set; } = new Order();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
 
         #endregion

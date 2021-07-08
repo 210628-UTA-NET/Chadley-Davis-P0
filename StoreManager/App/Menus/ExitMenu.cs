@@ -38,6 +38,7 @@ namespace App.Menus
             while (!MenuSelections.ContainsKey(userInput))
             {
                 Console.WriteLine("Please enter a valid response.");
+                userInput = Console.ReadLine();
             }
             Repeat = MenuSelections[userInput];
             return MenuType.None;

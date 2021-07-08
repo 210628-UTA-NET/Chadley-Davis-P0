@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace StoreModels
@@ -9,6 +10,7 @@ namespace StoreModels
         public Guid Id { get; set; } = Guid.NewGuid();
         public string PhoneNumber { get; set; } = "";
         public string EmailAddress { get; set; } = "";
+        [NotMapped]
         public Guid AddressId
         {
             get
@@ -24,7 +26,8 @@ namespace StoreModels
             }
         }
         [JsonIgnore]
-        public Address Address { get; set; } = new Address();
+        [NotMapped]
+        public virtual Address Address { get; set; } = new Address();
         public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
         #endregion
 

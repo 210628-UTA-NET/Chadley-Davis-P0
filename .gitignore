@@ -7,6 +7,8 @@
 **/bin
 **/obj
 **/appsettings.json
+**/Migrations
+**/.vs
 
 
 # Common node modules locations

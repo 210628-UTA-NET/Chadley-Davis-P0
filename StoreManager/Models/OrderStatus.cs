@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Models
 {
-    public enum Category
+    public enum OrderStatus
     {
-        None = 0,
-        Clothing = 1,
-        Electronics = 2,
-        Sports = 3,
-        Outdoors = 4
+        None,
+        ShoppingCart,
+        Pending,
+        InProgress,
+        Completed
     }
 }

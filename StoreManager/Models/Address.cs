@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Entities
+namespace Models
 {
     public class Address
     {
@@ -18,5 +19,8 @@ namespace Models.Entities
         public string Country { get; set; }
         public string ZipCode { get; set; }
         public DateTime LastUpdate { get; set; }
+        public Guid ContactInformationId { get; set; }
+        [ForeignKey("ContactInformationId")]
+        public ContactInformation ContactInformation { get; set; }
     }
 }

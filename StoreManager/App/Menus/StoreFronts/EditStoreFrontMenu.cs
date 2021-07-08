@@ -1,4 +1,4 @@
-﻿using Models.Entities;
+﻿using Models;
 using StoreBL;
 using System;
 using System.Collections.Generic;

@@ -14,7 +14,7 @@ namespace App
         static void Main(string[] args)
         {
             IMenu currentMenu;
-            MenuType currentMenuType = MenuType.MainMenu;
+            MenuType currentMenuType = MenuType.StoreFrontsMenu;
             Factory = new MenuFactory();
             currentMenu = Factory.GetMenu(currentMenuType);
             do

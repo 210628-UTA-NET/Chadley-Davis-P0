@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models.Entities;
+using Models;
 using StoreBL;
 using System;
 using System.Collections.Generic;
@@ -18,11 +18,8 @@ namespace App.Menus.StoreFronts
         static Guid StoreFrontId { get; set; }
         Dictionary<string, Func<MenuType>> MenuSelections = new Dictionary<string, Func<MenuType>>(){
             { "A", () => {
-                SearchStoreFrontMenu menu = new SearchStoreFrontMenu();
-                menu.Menu();
-
-                menu.MakeChoice();
-                SearchTerm = menu.SearchTerm;                
+                Console.WriteLine("Enter a search term to filter results.");
+                SearchTerm = Console.ReadLine();
                 return MenuType.None;
             } },
             { "B", () => 

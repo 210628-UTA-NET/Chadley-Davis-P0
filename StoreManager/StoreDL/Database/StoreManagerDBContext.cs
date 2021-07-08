@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Models.Entities;
+using Models;
 using System;
 using System.IO;
 
@@ -37,6 +37,27 @@ namespace StoreDL.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().Property(product => product.Category).HasConversion<int>();
+
+            modelBuilder.Entity<Order>().Property(order => order.OrderStatus).HasConversion<int>();
+
+            modelBuilder
+                .Entity<StoreFront>()
+                .HasMany(p => p.Customers)
+                .WithMany(p => p.StoreFronts)
+                .UsingEntity(j => j.ToTable("StoreFrontCustomers"));
+
+            modelBuilder.Entity<ContactInformation>().HasOne(c => c.Address).WithOne(a => a.ContactInformation);
+
+            modelBuilder.Entity<StoreFront>().HasMany(s => s.Orders).WithOne(o => o.StoreFront);
+            modelBuilder.Entity<Customer>().HasMany(o => o.Orders).WithOne(o => o.Customer);
+
+            modelBuilder.Entity<Order>().HasMany(o => o.Details).WithOne(d => d.Order);
+
+            modelBuilder.Entity<StoreFront>().HasMany(s => s.Inventory).WithOne(o => o.StoreFront);
+
+
+
+
         }
     }
 }

@@ -19,7 +19,22 @@ namespace StoreDL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Models.Entities.Address", b =>
+            modelBuilder.Entity("CustomerStoreFront", b =>
+                {
+                    b.Property<Guid>("CustomersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StoreFrontsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CustomersId", "StoreFrontsId");
+
+                    b.HasIndex("StoreFrontsId");
+
+                    b.ToTable("StoreFrontCustomers");
+                });
+
+            modelBuilder.Entity("Models.Address", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,6 +48,9 @@ namespace StoreDL.Migrations
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ContactInformationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
@@ -48,16 +66,16 @@ namespace StoreDL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContactInformationId")
+                        .IsUnique();
+
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Models.Entities.ContactInformation", b =>
+            modelBuilder.Entity("Models.ContactInformation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EmailAddress")
@@ -68,12 +86,10 @@ namespace StoreDL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("ContactInformation");
                 });
 
-            modelBuilder.Entity("Models.Entities.Customer", b =>
+            modelBuilder.Entity("Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,19 +107,14 @@ namespace StoreDL.Migrations
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("StoreFrontId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ContactId");
 
-                    b.HasIndex("StoreFrontId");
-
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Models.Entities.Detail", b =>
+            modelBuilder.Entity("Models.Detail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,9 +122,6 @@ namespace StoreDL.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("InventoryId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdate")
                         .HasColumnType("datetime2");
@@ -126,8 +134,6 @@ namespace StoreDL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InventoryId");
-
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
@@ -135,7 +141,7 @@ namespace StoreDL.Migrations
                     b.ToTable("Details");
                 });
 
-            modelBuilder.Entity("Models.Entities.Inventory", b =>
+            modelBuilder.Entity("Models.Inventory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,12 +150,22 @@ namespace StoreDL.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StoreFrontId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("StoreFrontId");
 
                     b.ToTable("Inventories");
                 });
 
-            modelBuilder.Entity("Models.Entities.Order", b =>
+            modelBuilder.Entity("Models.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,13 +183,10 @@ namespace StoreDL.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
                     b.Property<Guid?>("StoreFrontId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StoreFrontId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("StoreFrontId2")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -182,14 +195,10 @@ namespace StoreDL.Migrations
 
                     b.HasIndex("StoreFrontId");
 
-                    b.HasIndex("StoreFrontId1");
-
-                    b.HasIndex("StoreFrontId2");
-
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("Models.Entities.Product", b =>
+            modelBuilder.Entity("Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,16 +218,13 @@ namespace StoreDL.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Models.Entities.StoreFront", b =>
+            modelBuilder.Entity("Models.StoreFront", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ContactId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("InventoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastUpdate")
@@ -231,108 +237,118 @@ namespace StoreDL.Migrations
 
                     b.HasIndex("ContactId");
 
-                    b.HasIndex("InventoryId");
-
                     b.ToTable("StoreFronts");
                 });
 
-            modelBuilder.Entity("Models.Entities.ContactInformation", b =>
+            modelBuilder.Entity("CustomerStoreFront", b =>
                 {
-                    b.HasOne("Models.Entities.Address", "Address")
+                    b.HasOne("Models.Customer", null)
                         .WithMany()
-                        .HasForeignKey("AddressId");
+                        .HasForeignKey("CustomersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Address");
+                    b.HasOne("Models.StoreFront", null)
+                        .WithMany()
+                        .HasForeignKey("StoreFrontsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Models.Entities.Customer", b =>
+            modelBuilder.Entity("Models.Address", b =>
                 {
-                    b.HasOne("Models.Entities.ContactInformation", "Contact")
+                    b.HasOne("Models.ContactInformation", "ContactInformation")
+                        .WithOne("Address")
+                        .HasForeignKey("Models.Address", "ContactInformationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactInformation");
+                });
+
+            modelBuilder.Entity("Models.Customer", b =>
+                {
+                    b.HasOne("Models.ContactInformation", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId");
-
-                    b.HasOne("Models.Entities.StoreFront", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("StoreFrontId");
 
                     b.Navigation("Contact");
                 });
 
-            modelBuilder.Entity("Models.Entities.Detail", b =>
+            modelBuilder.Entity("Models.Detail", b =>
                 {
-                    b.HasOne("Models.Entities.Inventory", null)
-                        .WithMany("Details")
-                        .HasForeignKey("InventoryId");
-
-                    b.HasOne("Models.Entities.Order", null)
+                    b.HasOne("Models.Order", "Order")
                         .WithMany("Details")
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("Models.Entities.Product", "Product")
+                    b.HasOne("Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Models.Entities.Order", b =>
+            modelBuilder.Entity("Models.Inventory", b =>
                 {
-                    b.HasOne("Models.Entities.Customer", null)
+                    b.HasOne("Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Models.StoreFront", "StoreFront")
+                        .WithMany("Inventory")
+                        .HasForeignKey("StoreFrontId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("StoreFront");
+                });
+
+            modelBuilder.Entity("Models.Order", b =>
+                {
+                    b.HasOne("Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("Models.Entities.StoreFront", null)
-                        .WithMany("CompletedOrders")
+                    b.HasOne("Models.StoreFront", "StoreFront")
+                        .WithMany("Orders")
                         .HasForeignKey("StoreFrontId");
 
-                    b.HasOne("Models.Entities.StoreFront", null)
-                        .WithMany("Pendingorders")
-                        .HasForeignKey("StoreFrontId1");
+                    b.Navigation("Customer");
 
-                    b.HasOne("Models.Entities.StoreFront", null)
-                        .WithMany("ShoppingCart")
-                        .HasForeignKey("StoreFrontId2");
+                    b.Navigation("StoreFront");
                 });
 
-            modelBuilder.Entity("Models.Entities.StoreFront", b =>
+            modelBuilder.Entity("Models.StoreFront", b =>
                 {
-                    b.HasOne("Models.Entities.ContactInformation", "Contact")
+                    b.HasOne("Models.ContactInformation", "Contact")
                         .WithMany()
                         .HasForeignKey("ContactId");
 
-                    b.HasOne("Models.Entities.Inventory", "Inventory")
-                        .WithMany()
-                        .HasForeignKey("InventoryId");
-
                     b.Navigation("Contact");
-
-                    b.Navigation("Inventory");
                 });
 
-            modelBuilder.Entity("Models.Entities.Customer", b =>
+            modelBuilder.Entity("Models.ContactInformation", b =>
+                {
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Models.Customer", b =>
                 {
                     b.Navigation("Orders");
                 });
 
-            modelBuilder.Entity("Models.Entities.Inventory", b =>
+            modelBuilder.Entity("Models.Order", b =>
                 {
                     b.Navigation("Details");
                 });
 
-            modelBuilder.Entity("Models.Entities.Order", b =>
+            modelBuilder.Entity("Models.StoreFront", b =>
                 {
-                    b.Navigation("Details");
-                });
+                    b.Navigation("Inventory");
 
-            modelBuilder.Entity("Models.Entities.StoreFront", b =>
-                {
-                    b.Navigation("CompletedOrders");
-
-                    b.Navigation("Customers");
-
-                    b.Navigation("Pendingorders");
-
-                    b.Navigation("ShoppingCart");
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

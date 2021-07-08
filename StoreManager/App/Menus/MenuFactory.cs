@@ -7,7 +7,7 @@ using App.Menus.Products;
 using App.Menus.StoreFronts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Models.Entities;
+using Models;
 using StoreBL;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,6 @@ namespace App.Menus
         /// Dynamics to be executed for various function types
         /// </summary>
         static Dictionary<MenuType, Func<IMenu, IMenu>> menus = new Dictionary<MenuType, Func<IMenu, IMenu>>() {
-            { MenuType.MainMenu, (currentMenu) => new MainMenu() },
             { MenuType.CustomerMenu, (currentMenu) => new CustomerMenu() },
             { MenuType.AddressMenu, (currentMenu) => new AddressMenu() },
             { MenuType.ContactInformationMenu, (currentMenu) => new ContactInformationMenu() },
@@ -40,10 +39,6 @@ namespace App.Menus
             { MenuType.DetailMenu, (currentMenu) => new DetailMenu() },
             { MenuType.EditStoreFrontMenu, (currentMenu) => new EditStoreFrontMenu(((StoreFrontMenu)currentMenu).StoreFront) },
             { MenuType.AddStoreFrontMenu, (currentMenu) => new StoreFrontMenu(StoreFrontsMenu.StoreFront) },
-            { MenuType.SearchStoreFrontMenu, (currentMenu) => {
-                SearchStoreFrontMenu searchStore = new SearchStoreFrontMenu();
-                return null;
-            } },
             { MenuType.ExitMenu, (currentMenu) => {
                 ExitMenu menu = new ExitMenu();
                 menu.Menu();

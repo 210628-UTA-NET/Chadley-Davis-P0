@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Models.Entities;
+using Models;
 using StoreDL.Database;
 using System;
 using System.Collections.Generic;

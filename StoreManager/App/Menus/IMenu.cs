@@ -10,7 +10,7 @@ namespace App.Menus
     {
         
         ExitMenu = 0,
-        MainMenu = 1,
+        StoreFrontsMenu = 1,
         AddressMenu = 2,
         ContactInformationMenu = 3,
         CustomerMenu = 4,
@@ -19,13 +19,12 @@ namespace App.Menus
         ProductMenu = 7,
         StoreFrontMenu = 8,
         SelectStoreFrontMenu = 9,
-        StoreFrontsMenu = 10,
-        AddStoreFrontMenu = 11,
-        AddStoreFrontsMenu = 12,
-        None = 13,
-        GetStoreFrontMenu = 14,
-        SearchStoreFrontMenu = 15,
-        EditStoreFrontMenu = 16
+        AddStoreFrontMenu = 10,
+        AddStoreFrontsMenu = 11,
+        None = 12,
+        GetStoreFrontMenu = 13,
+        SearchStoreFrontMenu = 14,
+        EditStoreFrontMenu = 15
     }
     public interface IMenu
     {

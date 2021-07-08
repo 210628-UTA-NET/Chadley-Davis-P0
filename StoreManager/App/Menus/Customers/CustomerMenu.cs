@@ -10,7 +10,7 @@ namespace App.Menus.Customers
         public string Header { get { return Constants.Customer; } }
 
         Dictionary<MenuType, Func<IMenu>> menus = new Dictionary<MenuType, Func<IMenu>>() {
-            { MenuType.MainMenu, () => new MainMenu() },
+            { MenuType.StoreFrontsMenu, () => new StoreFrontsMenu() },
             { MenuType.ContactInformationMenu, () => new ContactInformationMenu() },
             { MenuType.StoreFrontMenu, () => null }
         };
